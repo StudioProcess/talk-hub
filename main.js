@@ -105,6 +105,11 @@ $(document).on('keydown', (e) => {
   }
   
   else if (e.key == 'c' || e.key == 'C') { toggleColorize(); }
+  
+  else if (e.key == '0') { resizeAll(1); }
+  else if (e.key == '1') { resizeAll(0.24); }
+  else if (e.key == '2') { resizeAll(0.48); }
+  
 });
 
 function invertNums(arr) {
@@ -148,12 +153,18 @@ function resizeAll(size=1, time=resizeTime) {
   let n_last = n % per_row; // number of posts in last row
   let n_filler = per_row - n_last;
   // console.log(n_last, n_filler);
-  let $fillers = $('.post.filler');
-  $fillers.replaceWith( '<div class="post filler"></div>'.repeat(n_filler) );
-  $('.post').animate({
+  $('.post.filler').remove();
+  let html = '<div class="post filler"></div>'.repeat(n_filler);
+  console.log(html);
+  $('.post-container').append( html );
+  $('.post').stop().animate({
     width: w/row_width*100 + '%',
     marginBottom: m/row_width*100 + '%'
   }, resizeTime);
+  // $('.post').css({
+  //   width: w/row_width*100 + '%',
+  //   marginBottom: m/row_width*100 + '%'
+  // });
 }
 
 let chromeVisible = true;
