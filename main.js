@@ -84,6 +84,13 @@ $(document).on('keydown', (e) => {
     let shown = $('.post-num').eq(0).is(":visible");
     if (!shown) $('.post-num').fadeIn(100);
     else $('.post-num').fadeOut(100);
+  } else if (e.keyCode == 9) { // TAB .. toggle chrome
+    toggleChrome();
+    e.preventDefault();
+  } else if (e.key == 'f' || e.key == 'F') { // f .. fullscreen
+    if (!document.webkitFullscreenElement) {
+      document.querySelector('html').webkitRequestFullscreen();
+    } else { document.webkitExitFullscreen(); }
   }
 });
 
