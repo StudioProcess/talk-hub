@@ -48,6 +48,7 @@ $(() => {
   
   let showHideTime = 600;
   let overlayTime = 600;
+  let resizeTime = 1200;
   
   function invertNums(arr) {
     let out = [];
@@ -81,6 +82,22 @@ $(() => {
   }
   function rmOverlayAll() { rmOverlay(allNums()); }
   
+  function resizeAll(size=1, time=resizeTime) {
+    // calc sizing (size=1: 293/935 total, 28 margin)
+    let row_width = 935;
+    let w = 293 * size; // post width in px
+    let per_row = Math.floor(935/w); // how many per row ?
+    let m = (row_width - per_row*w) / (per_row-1); // margin in px
+    let n_last = n % per_row; // number of posts in last row
+    let n_filler = per_row - n_last;
+    // console.log(n_last, n_filler);
+    let $fillers = $('.post.filler');
+    $fillers.replaceWith( '<div class="post filler"></div>'.repeat(n_filler) );
+    $('.post').animate({
+      width: w/row_width*100 + '%',
+      marginBottom: m/row_width*100 + '%'
+    }, resizeTime);
+  }
   
   // add functions to global scope for testing
   window.invertNums = invertNums;
@@ -97,4 +114,5 @@ $(() => {
   window.overlay = overlay;
   window.rmOverlay = rmOverlay;
   window.rmOverlayAll = rmOverlayAll;
+  window.resizeAll = resizeAll;
 });
