@@ -12,6 +12,15 @@ let nogroup; // posts without a group
 // Newest to oldest
 let order = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
 
+let keynoteSlides = {
+  exoplanets: 1,
+  airplane_geometry: 2,
+  pillars: 3,
+  space_colonization: 4,
+  flash_flooding: 5,
+  universe: 6,
+  patterns: 7,
+};
 
 // let sat = 90;
 // let lit = 50;
@@ -57,8 +66,10 @@ function init() {
       ._lxd52 { transform-origin: top right; } /* overlay symbols */
       .overlay { 
         position:absolute; top:0; left:0; width:100%; height:100%; background-color:#000; opacity:0.3; display:none;
+        pointer-events:none;
       }
       .post { transition: filter 0.5s; }
+      .post a { display:block; }
       .post.dim { filter: grayscale(100%) blur(5px) opacity(10%); }
       .post-container[style] { flex-direction:row !important; flex-wrap:wrap; justify-content:space-between; }
       .post { margin:0; margin-bottom:2.994652406%; flex-shrink:0; flex-grow:0; width:31.3368984%; }
@@ -215,6 +226,7 @@ let groupsColorized = false;
 function colorizeGroups() {
   // overlay(nogroup, '#fff', 0.9);
   dim(nogroup);
+  setLinks();
   for (let groupName of Object.keys(groups)) {
     console.log(colors[groupName]);
     overlay(groups[groupName], colors[groupName], colorizeOpacity);
@@ -225,6 +237,7 @@ function colorizeGroups() {
 function uncolorizeGroups() {
   rmOverlayAll();
   undimAll();
+  unsetLinks();
   groupsColorized = false;
 }
 
@@ -276,6 +289,29 @@ function scramble(cb, time=300) {
   }, int);
 }
 
+function setLinks() {
+  $('.post a').css('pointerEvents', 'none'); // deactivate all links
+  // set group links
+  Object.keys(groups).forEach(groupName => {
+    let href = 'appswitch://keynote?slide=' + keynoteSlides[groupName];
+    groups[groupName].forEach(num => {
+      let a = getPost(num).find('a');
+      a.attr('data-href-orig', a.attr('href'));
+      a.attr('href', href);
+      a.css('pointerEvents', '');
+    });
+  });
+}
+
+function unsetLinks() {
+  $('.post a').each((i, el) => {
+    let a = $(el);
+    a.css('pointerEvents', ''); // activate link
+    let href = a.attr('data-href-orig');
+    if (href) a.attr('href', href);
+  });
+}
+
 
 // Add functions to global scope for testing
 function setGlobals() {
@@ -302,4 +338,7 @@ function setGlobals() {
   
   window.sort = sort;
   window.unsort = unsort;
+  
+  window.setLinks = setLinks;
+  window.unsetLinks = unsetLinks;
 }
