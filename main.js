@@ -10,7 +10,7 @@ let groups = {
 let nogroup; // posts without a group
 
 // Newest to oldest
-let colorOrder = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
+let order = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
 
 
 // let sat = 90;
@@ -119,6 +119,8 @@ $(document).on('keydown', (e) => {
   else if (e.key == '0') { resizeAll(1); }
   else if (e.key == '1') { resizeAll(0.24); }
   else if (e.key == '2') { resizeAll(0.48); }
+  
+  else if (e.key == 's' || e.key == 'S') { toggleSort(); }
   
 });
 
@@ -229,6 +231,49 @@ function toggleColorize() {
   else uncolorizeGroups();
 }
 
+let sorted = false;
+function sort() {
+  scramble(() => {
+    order.forEach((groupName, i) => {
+      groups[groupName].forEach(num => {
+        getPost(num).css('order', i-order.length);
+      });
+    });
+  });
+  sorted = true;
+}
+
+function unsort() {
+  scramble(() => {
+    $('.post').css('order',0);
+  });
+  sorted = false;
+}
+
+function toggleSort() {
+  if (!sorted) sort();
+  else unsort();
+}
+
+function scramble(cb, time=300) {
+  let fps = 30;
+  let int = 1000/fps;
+  let total = Math.floor(time/int);
+  let i = 0;
+  
+  let x = setInterval(() => {
+    $('.post').each((i, el) => {
+      let rnd = Math.floor(Math.random()*n);
+      // console.log(el, rnd);
+      $(el).css( 'order', rnd );
+    });
+    if (i++ >= total) {
+      clearInterval(x);
+      if (cb) cb();
+    }
+  }, int);
+}
+
 
 // Add functions to global scope for testing
 function setGlobals() {
@@ -246,8 +291,13 @@ function setGlobals() {
   window.overlay = overlay;
   window.rmOverlay = rmOverlay;
   window.rmOverlayAll = rmOverlayAll;
+  
   window.resizeAll = resizeAll;
+  
   window.hideChrome = hideChrome;
   window.showChrome = showChrome;
   window.toggleChrome = toggleChrome;
+  
+  window.sort = sort;
+  window.unsort = unsort;
 }
