@@ -1,24 +1,25 @@
 let groups = {
   exoplanets: [113, 112, 111, 110, 109, 108, 107, ],
   airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, ],
-  pillars: [91, 86, 73, 71, 70, 69, 48, 45, 38, ],
+  pillars: [91, 86, 73, 71, 70, 69, 48, 45, 40, 38, ],
   space_colonization: [77, 60, 57, 56, 55, 51, ],
   flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, ],
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ]
 };
+let nogroup; // posts without a group
 
 // Newest to oldest
 let colorOrder = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
 
-let hue = 0;
-let sat = 80;
-let bri = [20, 90];
 
+let sat = 90;
+let lit = 50;
+
+Math.seedrandom(2);
 let colors = colorOrder.reduce((acc, val, idx) => {
-  let step = (bri[1]-bri[0]) / (colorOrder.length-1);
-  let b = bri[0] + (colorOrder.length-idx-1) * step;
-  acc[val] = `hsl(${hue} ${sat}% ${b.toFixed(2)}%)`;
+  let hue = Math.random() * 360;
+  acc[val] = `hsl(${hue.toFixed(2)}, ${sat}%, ${lit}%)`;
   return acc;
 }, []);
 
@@ -73,6 +74,12 @@ function init() {
   });
   
   setGlobals();
+  
+  nogroup = Array.from( Object.values(groups).reduce((acc, grp) => {
+    console.log(grp);
+    grp.forEach( n => acc.delete(n) );
+    return acc;
+  }, new Set(allNums())) );
 }
 
 $( () => init() ); // run initalization on page load
@@ -84,14 +91,20 @@ $(document).on('keydown', (e) => {
     let shown = $('.post-num').eq(0).is(":visible");
     if (!shown) $('.post-num').fadeIn(100);
     else $('.post-num').fadeOut(100);
-  } else if (e.keyCode == 9) { // TAB .. toggle chrome
+  } 
+  
+  else if (e.keyCode == 9) { // TAB .. toggle chrome
     toggleChrome();
     e.preventDefault();
-  } else if (e.key == 'f' || e.key == 'F') { // f .. fullscreen
+  }
+  
+  else if (e.key == 'f' || e.key == 'F') { // f .. fullscreen
     if (!document.webkitFullscreenElement) {
       document.querySelector('html').webkitRequestFullscreen();
     } else { document.webkitExitFullscreen(); }
   }
+  
+  else if (e.key == 'c' || e.key == 'C') { toggleColorize(); }
 });
 
 function invertNums(arr) {
@@ -169,6 +182,28 @@ function showChrome(time=transitionTime.chrome) {
 function toggleChrome(time=transitionTime.chrome) {
   if (chromeVisible) { hideChrome(time); }
   else { showChrome(time); }
+}
+
+let groupsColorized = false;
+function colorizeGroups() {
+  // overlay(nogroup, '#fff', 0.9);
+  dim(nogroup);
+  for (let groupName of Object.keys(groups)) {
+    console.log(colors[groupName]);
+    overlay(groups[groupName], colors[groupName], 0.7);
+  }
+  groupsColorized = true;
+}
+
+function uncolorizeGroups() {
+  rmOverlayAll();
+  undimAll();
+  groupsColorized = false;
+}
+
+function toggleColorize() {
+  if (!groupsColorized) colorizeGroups();
+  else uncolorizeGroups();
 }
 
 
