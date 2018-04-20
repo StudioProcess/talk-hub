@@ -40,7 +40,7 @@ function init() {
   $('body').prepend(`
     <style>
       .post-num {
-        position:absolute; bottom:0; right:0; background:black; color:white; padding:0.33rem; display:none;
+        position:absolute; bottom:0; right:0; background:black; color:white; padding:16px; font-size:32px; display:none;
       }
       .overlay { 
         position:absolute; top:0; left:0; width:100%; height:100%; background-color:#000; opacity:0.3; display:none;
@@ -82,8 +82,8 @@ $( () => init() ); // run initalization on page load
 $(document).on('keydown', (e) => {
   if (e.key == 'n' || e.key == 'N') { // show hide post numbering
     let shown = $('.post-num').eq(0).is(":visible");
-    if (!shown) $('.post-num').show();
-    else $('.post-num').hide();
+    if (!shown) $('.post-num').fadeIn(100);
+    else $('.post-num').fadeOut(100);
   }
 });
 
