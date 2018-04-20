@@ -99,7 +99,7 @@ function init() {
   setGlobals();
   
   nogroup = Array.from( Object.values(groups).reduce((acc, grp) => {
-    console.log(grp);
+    // console.log(grp);
     grp.forEach( n => acc.delete(n) );
     return acc;
   }, new Set(allNums())) );
@@ -180,12 +180,12 @@ function resizeAll(size=1, time=resizeTime) {
   // console.log(n_last, n_filler);
   $('.post.filler').remove();
   let html = '<div class="post filler"></div>'.repeat(n_filler);
-  console.log(html);
+  // console.log(html);
   $('.post-container').append( html );
   $('.post').stop().animate({
     width: w/row_width*100 + '%',
     marginBottom: m/row_width*100 + '%'
-  }, resizeTime);
+  }, time);
   $('.post-num, ._lxd52').css({'transform': `scale(${size})`});
   
   // $('.post').css({
@@ -207,7 +207,7 @@ function hideChrome(time=transitionTime.chrome) {
 }
 
 function showChrome(time=transitionTime.chrome) {
-  console.log(time);
+  // console.log(time);
   $('body').stop().animate( {'marginTop': 0}, time/3, () => {
     // header, overlay buttons (video, multiple pics), footer, account info
     $('nav._68u16, ._lxd52, footer, header._mainc').stop()
@@ -228,7 +228,7 @@ function colorizeGroups() {
   dim(nogroup);
   setLinks();
   for (let groupName of Object.keys(groups)) {
-    console.log(colors[groupName]);
+    // console.log(colors[groupName]);
     overlay(groups[groupName], colors[groupName], colorizeOpacity);
   }
   groupsColorized = true;
