@@ -24,13 +24,13 @@ let nogroup; // posts without a group
 let order = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
 
 let keynoteSlides = {
-  exoplanets: 1,
-  airplane_geometry: 2,
-  pillars: 3,
-  space_colonization: 4,
-  flash_flooding: 5,
-  universe: 6,
-  patterns: 7,
+  exoplanets: 3,
+  airplane_geometry: 16,
+  pillars: 31,
+  space_colonization: 49,
+  flash_flooding: 57,
+  universe: 72,
+  patterns: 80,
 };
 
 let colors = {
