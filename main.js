@@ -8,7 +8,7 @@ $(() => {
         position:absolute; bottom:0; right:0; background:black; color:white; padding:0.33rem; display:none;
       }
       .overlay { 
-        position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.3); display:none;
+        position:absolute; top:0; left:0; width:100%; height:100%; background-color:#000; opacity:0.3; display:none;
       }
       .post { transition: filter 0.5s; }
       .post.dim { filter: grayscale(100%) blur(5px) opacity(10%); }
@@ -47,6 +47,7 @@ $(() => {
   });
   
   let showHideTime = 600;
+  let overlayTime = 600;
   
   function invertNums(arr) {
     let out = [];
@@ -64,7 +65,21 @@ $(() => {
   function undim(arr) { arr.forEach(i => getPost(i).removeClass('dim')); }
   function undimAll() { undim(allNums()); }
   
-  function highlight(arr) { undim(arr); dim(invertNums(arr));  }
+  function highlight(arr) { undim(arr); dim(invertNums(arr)); }
+  
+  function overlay(arr, color='#000', opacity=0.5) { 
+    arr.forEach(i => {
+      let overlay = getPost(i).find('.overlay');
+      if (overlay.css('display') == 'none') overlay.css({'opacity':0, 'display':'flex'});
+      overlay.animate( {'backgroundColor':color, 'opacity':opacity}, overlayTime );
+    }); 
+  }
+  function rmOverlay(arr) {
+    arr.forEach(i => {
+      getPost(i).find('.overlay').fadeOut(overlayTime)
+    }); 
+  }
+  function rmOverlayAll() { rmOverlay(allNums()); }
   
   
   // add functions to global scope for testing
@@ -79,4 +94,7 @@ $(() => {
   window.undim = undim;
   window.undimAll = undimAll;
   window.highlight = highlight;
+  window.overlay = overlay;
+  window.rmOverlay = rmOverlay;
+  window.rmOverlayAll = rmOverlayAll;
 });
