@@ -136,6 +136,14 @@ function invertNums(arr) {
 function allNums() { return invertNums([]); }
 function getPost(i) { return $(`[data-num=${i}]`); }
 
+// find group name for post number
+function getGroup(i) {
+  for (let groupName of Object.keys(groups)) {
+    if ( groups[groupName].includes(i) ) return groupName;
+  }
+  return undefined;
+}
+
 function show(arr, time=transitionTime.showHide) { arr.forEach(i => getPost(i).show(time)); }
 function showAll() { show(allNums()); }
 function hide(arr, time=transitionTime.showHide) { arr.forEach(i => getPost(i).hide(time)); }
@@ -213,6 +221,18 @@ function toggleChrome(time=transitionTime.chrome) {
   else { showChrome(time); }
 }
 
+// Add color overlay according to group membership
+function colorize(nums) {
+  nums.forEach(i => {
+    let groupName = getGroup(i);
+    overlay([i], colors[groupName], colorizeOpacity);
+  });
+}
+
+function uncolorize(nums) {
+  rmOverlay(nums);
+}
+
 let groupsColorized = false;
 function colorizeGroups() {
   // overlay(nogroup, '#fff', 0.9);
@@ -235,6 +255,15 @@ function uncolorizeGroups() {
 function toggleColorize() {
   if (!groupsColorized) colorizeGroups();
   else uncolorizeGroups();
+}
+
+function focusGroup(grpNum, withColor = false) {
+  let nums = groups[order[grpNum]];
+  let others = invertNums(nums);
+  undim(nums);
+  if (withColor) colorize(nums); else uncolorize(nums);
+  dim(others);
+  uncolorize(others);
 }
 
 let sorted = false;
@@ -326,6 +355,11 @@ function setGlobals() {
   window.hideChrome = hideChrome;
   window.showChrome = showChrome;
   window.toggleChrome = toggleChrome;
+  
+  window.colorize = colorize;
+  window.uncolorize = uncolorize;
+  
+  window.focusGroup = focusGroup;
   
   window.sort = sort;
   window.unsort = unsort;
