@@ -126,6 +126,9 @@ $(document).on('keydown', (e) => {
   
   else if (e.key == 's' || e.key == 'S') { toggleSort(); }
   
+  else if (e.keyCode == 39) { focusNext(); } // right arrow
+  else if (e.keyCode == 37) { focusPrev(); } // left arrow
+  
 });
 
 function invertNums(arr) {
@@ -233,29 +236,33 @@ function uncolorize(nums) {
   rmOverlay(nums);
 }
 
-let groupsColorized = false;
+let focused = false; // some elements are focused or colorized
 function colorizeGroups() {
   // overlay(nogroup, '#fff', 0.9);
   dim(nogroup);
   setLinks();
   for (let groupName of Object.keys(groups)) {
     // console.log(colors[groupName]);
+    undim(groups[groupName]);
     overlay(groups[groupName], colors[groupName], colorizeOpacity);
   }
-  groupsColorized = true;
+  focused = true;
 }
 
 function uncolorizeGroups() {
   rmOverlayAll();
   undimAll();
   unsetLinks();
-  groupsColorized = false;
+  focused = false;
 }
 
 function toggleColorize() {
-  if (!groupsColorized) colorizeGroups();
+  if (!focused) colorizeGroups();
   else uncolorizeGroups();
 }
+
+let focusedGroup = -1;
+let focusedState = 2; // 0..focus group with color, 1..focus group without color, 2..colorize none, 3..colorize all
 
 function focusGroup(grpNum, withColor = false) {
   let nums = groups[order[grpNum]];
@@ -264,7 +271,38 @@ function focusGroup(grpNum, withColor = false) {
   if (withColor) colorize(nums); else uncolorize(nums);
   dim(others);
   uncolorize(others);
+  focused = true;
+  focusedGroup = grpNum;
 }
+
+function focusNext(stateOffset = 1) {
+  // change state
+  focusedState += stateOffset;
+  if (focusedState >= 4) {
+    focusedGroup++;
+    if (focusedGroup >= order.length) focusedGroup %= order.length;
+    focusedState %= 4;
+  } else if (focusedState < 0) {
+    focusedGroup--;
+    if (focusedGroup < 0) focusedGroup = focusedGroup % order.length + order.length;
+    focusedState = focusedState % 4 + 4;
+  }
+  
+  console.log(focusedGroup, focusedState);
+  
+  if (focusedState == 0) {
+    focusGroup(focusedGroup, true);
+  } else if (focusedState == 1) {
+    focusGroup(focusedGroup, false);
+  } else if (focusedState == 2) {
+    uncolorizeGroups();
+  } else if (focusedState == 3) {
+    colorizeGroups();
+  }
+}
+
+function focusPrev() { focusNext(-1); }
+
 
 let sorted = false;
 function sort() {
