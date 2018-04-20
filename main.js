@@ -27,6 +27,10 @@ let showHideTime = 600;
 let overlayTime = 600;
 let resizeTime = 1200;
 
+let transitionTime = {
+  chrome: 1200
+};
+
 
 let p, n; // posts + number of posts
 
@@ -45,6 +49,7 @@ function init() {
       .post.dim { filter: grayscale(100%) blur(5px) opacity(10%); }
       .post-container[style] { flex-direction:row !important; flex-wrap:wrap; justify-content:space-between; }
       .post { margin:0; margin-bottom:2.994652406%; flex-shrink:0; flex-grow:0; width:31.3368984%; }
+      body, html { background-color:#fafafa; }
     </style>
   `);
   
@@ -131,6 +136,35 @@ function resizeAll(size=1, time=resizeTime) {
   }, resizeTime);
 }
 
+let chromeVisible = true;
+
+function hideChrome(time=transitionTime.chrome) {
+  // header, overlay buttons (video, multiple pics), footer, account info
+  $('nav._68u16, ._lxd52, footer, header._mainc').stop()
+    .css('pointerEvents', 'none')
+    .animate( {opacity:0}, time/3*2, () => {
+      $('body').stop().animate({'marginTop': -290}, time/3);
+    });
+  chromeVisible = false;
+}
+
+function showChrome(time=transitionTime.chrome) {
+  console.log(time);
+  $('body').stop().animate( {'marginTop': 0}, time/3, () => {
+    // header, overlay buttons (video, multiple pics), footer, account info
+    $('nav._68u16, ._lxd52, footer, header._mainc').stop()
+      .animate({opacity:1}, time/3*2)
+      .css('pointerEvents', 'auto');
+  });
+  chromeVisible = true;
+}
+
+function toggleChrome(time=transitionTime.chrome) {
+  if (chromeVisible) { hideChrome(time); }
+  else { showChrome(time); }
+}
+
+
 // Add functions to global scope for testing
 function setGlobals() {
   window.invertNums = invertNums;
@@ -148,4 +182,7 @@ function setGlobals() {
   window.rmOverlay = rmOverlay;
   window.rmOverlayAll = rmOverlayAll;
   window.resizeAll = resizeAll;
+  window.hideChrome = hideChrome;
+  window.showChrome = showChrome;
+  window.toggleChrome = toggleChrome;
 }
