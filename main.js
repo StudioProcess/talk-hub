@@ -8,6 +8,21 @@ let groups = {
   patterns: [64, 63, 62, 61, 44, 42, 41, ]
 };
 
+// Newest to oldest
+let colorOrder = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
+
+let hue = 0;
+let sat = 80;
+let bri = [20, 90];
+
+let colors = colorOrder.reduce((acc, val, idx) => {
+  let step = (bri[1]-bri[0]) / (colorOrder.length-1);
+  let b = bri[0] + (colorOrder.length-idx-1) * step;
+  acc[val] = `hsl(${hue} ${sat}% ${b.toFixed(2)}%)`;
+  return acc;
+}, []);
+
+
 let showHideTime = 600;
 let overlayTime = 600;
 let resizeTime = 1200;
