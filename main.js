@@ -41,6 +41,7 @@ let transitionTime = {
   chrome: 1200
 };
 
+let colorizeOpacity = 0.85;
 
 let p, n; // posts + number of posts
 
@@ -216,7 +217,7 @@ function colorizeGroups() {
   dim(nogroup);
   for (let groupName of Object.keys(groups)) {
     console.log(colors[groupName]);
-    overlay(groups[groupName], colors[groupName], 0.9);
+    overlay(groups[groupName], colors[groupName], colorizeOpacity);
   }
   groupsColorized = true;
 }
