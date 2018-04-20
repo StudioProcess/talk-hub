@@ -53,6 +53,7 @@ function init() {
         position:absolute; bottom:0; right:0; background:black; color:white; padding:16px; font-size:32px; display:none;
         transform-origin: bottom right;
       }
+      ._lxd52 { transform-origin: top right; } /* overlay symbols */
       .overlay { 
         position:absolute; top:0; left:0; width:100%; height:100%; background-color:#000; opacity:0.3; display:none;
       }
@@ -173,7 +174,7 @@ function resizeAll(size=1, time=resizeTime) {
     width: w/row_width*100 + '%',
     marginBottom: m/row_width*100 + '%'
   }, resizeTime);
-  $('.post-num').css({'transform': `scale(${size})`});
+  $('.post-num, ._lxd52').css({'transform': `scale(${size})`});
   
   // $('.post').css({
   //   width: w/row_width*100 + '%',
