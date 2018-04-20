@@ -1,3 +1,14 @@
+let transitionTime = {
+  showHide: 600,
+  overlay: 1000,
+  dim: 1000,
+  resize: 1200,
+  chrome: 1200,
+  scramble: 1000,
+};
+
+let colorizeOpacity = 0.85;
+
 let groups = {
   exoplanets: [113, 112, 111, 110, 109, 108, 107, ],
   airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, ],
@@ -22,16 +33,6 @@ let keynoteSlides = {
   patterns: 7,
 };
 
-// let sat = 90;
-// let lit = 50;
-// Math.seedrandom(2);
-// let colors = colorOrder.reduce((acc, val, idx) => {
-//   let hue = Math.random() * 360;
-//   acc[val] = `hsl(${hue.toFixed(2)}, ${sat}%, ${lit}%)`;
-//   return acc;
-// }, []);
-
-
 let colors = {
   exoplanets: '#2551a7',
   airplane_geometry: '#1a1f39',
@@ -41,16 +42,6 @@ let colors = {
   universe: '#fd717a',
   patterns: '#f2d390',
 };
-
-let showHideTime = 600;
-let overlayTime = 600;
-let resizeTime = 1200;
-
-let transitionTime = {
-  chrome: 1200
-};
-
-let colorizeOpacity = 0.85;
 
 let p, n; // posts + number of posts
 
@@ -145,31 +136,31 @@ function invertNums(arr) {
 function allNums() { return invertNums([]); }
 function getPost(i) { return $(`[data-num=${i}]`); }
 
-function show(arr, time=showHideTime) { arr.forEach(i => getPost(i).show(time)); }
+function show(arr, time=transitionTime.showHide) { arr.forEach(i => getPost(i).show(time)); }
 function showAll() { show(allNums()); }
-function hide(arr, time=showHideTime) { arr.forEach(i => getPost(i).hide(time)); }
+function hide(arr, time=transitionTime.showHide) { arr.forEach(i => getPost(i).hide(time)); }
 
-function dim(arr) { arr.forEach(i => getPost(i).addClass('dim')); }
-function undim(arr) { arr.forEach(i => getPost(i).removeClass('dim')); }
-function undimAll() { undim(allNums()); }
+function dim(arr, time=transitionTime.dim) { arr.forEach(i => getPost(i).css('transitionDuration', time+'ms').addClass('dim')); }
+function undim(arr, time=transitionTime.dim) { arr.forEach(i => getPost(i).css('transitionDuration', time+'ms').removeClass('dim')); }
+function undimAll(time=transitionTime.dim) { undim(allNums(), time); }
 
 function highlight(arr) { undim(arr); dim(invertNums(arr)); }
 
-function overlay(arr, color='#000', opacity=0.5, time=overlayTime) { 
+function overlay(arr, color='#000', opacity=0.5, time=transitionTime.overlay) { 
   arr.forEach(i => {
     let overlay = getPost(i).find('.overlay');
     if (overlay.css('display') == 'none') overlay.css({'opacity':0, 'display':'flex'});
     overlay.animate( {'backgroundColor':color, 'opacity':opacity}, time );
   }); 
 }
-function rmOverlay(arr, time=overlayTime) {
+function rmOverlay(arr, time=transitionTime.overlay) {
   arr.forEach(i => {
     getPost(i).find('.overlay').fadeOut(time);
   }); 
 }
 function rmOverlayAll() { rmOverlay(allNums()); }
 
-function resizeAll(size=1, time=resizeTime) {
+function resizeAll(size=1, time=transitionTime.resize) {
   // calc sizing (size=1: 293/935 total, 28 margin)
   let row_width = 935;
   let w = 293 * size; // post width in px
@@ -270,7 +261,7 @@ function toggleSort() {
   else unsort();
 }
 
-function scramble(cb, time=300) {
+function scramble(cb, time=transitionTime.scramble) {
   let fps = 30;
   let int = 1000/fps;
   let total = Math.floor(time/int);
