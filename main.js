@@ -120,7 +120,7 @@ $(document).on('keydown', (e) => {
   
   else if (e.key == 'c' || e.key == 'C') { toggleColorize(); }
   
-  else if (e.key == '0') { resizeAll(1); }
+  else if (e.key == '0' || e.key == '3') { resizeAll(1); }
   else if (e.key == '1') { resizeAll(0.24); }
   else if (e.key == '2') { resizeAll(0.48); }
   
