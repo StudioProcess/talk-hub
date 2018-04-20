@@ -67,16 +67,16 @@ $(() => {
   
   function highlight(arr) { undim(arr); dim(invertNums(arr)); }
   
-  function overlay(arr, color='#000', opacity=0.5) { 
+  function overlay(arr, color='#000', opacity=0.5, time=overlayTime) { 
     arr.forEach(i => {
       let overlay = getPost(i).find('.overlay');
       if (overlay.css('display') == 'none') overlay.css({'opacity':0, 'display':'flex'});
-      overlay.animate( {'backgroundColor':color, 'opacity':opacity}, overlayTime );
+      overlay.animate( {'backgroundColor':color, 'opacity':opacity}, time );
     }); 
   }
-  function rmOverlay(arr) {
+  function rmOverlay(arr, time=overlayTime) {
     arr.forEach(i => {
-      getPost(i).find('.overlay').fadeOut(overlayTime)
+      getPost(i).find('.overlay').fadeOut(time);
     }); 
   }
   function rmOverlayAll() { rmOverlay(allNums()); }
