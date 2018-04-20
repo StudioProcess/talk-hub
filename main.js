@@ -12,7 +12,8 @@ $(() => {
       }
       .post { transition: filter 0.5s; }
       .post.dim { filter: grayscale(100%) blur(5px) opacity(10%); }
-      
+      .post-container[style] { flex-direction:row !important; flex-wrap:wrap; justify-content:space-between; }
+      .post { margin:0; margin-bottom:2.994652406%; flex-shrink:0; flex-grow:0; width:31.3368984%; }
     </style>
   `);
   
@@ -21,6 +22,7 @@ $(() => {
   p.addClass('post');
   let n = p.length;
   console.log(n + ' posts'); // output number of posts
+  p.unwrap();
   
   // Add post number data attribute (oldest = 1)
   p.attr('data-num', (i) => {
@@ -44,7 +46,7 @@ $(() => {
     }
   });
   
-  let showHideTime = 300;
+  let showHideTime = 600;
   
   function invertNums(arr) {
     let out = [];
