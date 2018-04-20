@@ -13,16 +13,25 @@ let nogroup; // posts without a group
 let colorOrder = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
 
 
-let sat = 90;
-let lit = 50;
+// let sat = 90;
+// let lit = 50;
+// Math.seedrandom(2);
+// let colors = colorOrder.reduce((acc, val, idx) => {
+//   let hue = Math.random() * 360;
+//   acc[val] = `hsl(${hue.toFixed(2)}, ${sat}%, ${lit}%)`;
+//   return acc;
+// }, []);
 
-Math.seedrandom(2);
-let colors = colorOrder.reduce((acc, val, idx) => {
-  let hue = Math.random() * 360;
-  acc[val] = `hsl(${hue.toFixed(2)}, ${sat}%, ${lit}%)`;
-  return acc;
-}, []);
 
+let colors = {
+  exoplanets: '#2551a7',
+  airplane_geometry: '#1a1f39',
+  pillars: '#9ce0eb',
+  space_colonization: '#689e86',
+  flash_flooding: '#787878',
+  universe: '#fd717a',
+  patterns: '#f2d390',
+};
 
 let showHideTime = 600;
 let overlayTime = 600;
@@ -201,7 +210,7 @@ function colorizeGroups() {
   dim(nogroup);
   for (let groupName of Object.keys(groups)) {
     console.log(colors[groupName]);
-    overlay(groups[groupName], colors[groupName], 0.7);
+    overlay(groups[groupName], colors[groupName], 0.9);
   }
   groupsColorized = true;
 }
