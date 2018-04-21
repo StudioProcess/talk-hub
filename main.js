@@ -60,7 +60,7 @@ function init() {
         pointer-events:none;
       }
       .post { transition: filter 0.5s; }
-      .post a { display:block; }
+      .post a { display:block; pointer-events:none; }
       .post.dim { filter: grayscale(100%) blur(5px) opacity(10%); }
       .post-container[style] { flex-direction:row !important; flex-wrap:wrap; justify-content:space-between; }
       .post { margin:0; margin-bottom:2.994652406%; flex-shrink:0; flex-grow:0; width:31.3368984%; }
@@ -95,6 +95,8 @@ function init() {
     grp.forEach( n => acc.delete(n) );
     return acc;
   }, new Set(allNums())) );
+  
+  setLinks();
 }
 
 $( () => init() ); // run initalization on page load
@@ -241,7 +243,6 @@ let focused = false; // some elements are focused or colorized
 function colorizeGroups() {
   // overlay(nogroup, '#fff', 0.9);
   dim(nogroup);
-  setLinks();
   for (let groupName of Object.keys(groups)) {
     // console.log(colors[groupName]);
     undim(groups[groupName]);
@@ -253,7 +254,6 @@ function colorizeGroups() {
 function uncolorizeGroups() {
   rmOverlayAll();
   undimAll();
-  unsetLinks();
   focused = false;
 }
 
@@ -348,6 +348,7 @@ function scramble(cb, time=transitionTime.scramble) {
   }, int);
 }
 
+// set links to keynote
 function setLinks() {
   $('.post a').css('pointerEvents', 'none'); // deactivate all links
   // set group links
@@ -357,7 +358,7 @@ function setLinks() {
       let a = getPost(num).find('a');
       a.attr('data-href-orig', a.attr('href'));
       a.attr('href', href);
-      a.css('pointerEvents', '');
+      a.css('pointerEvents', 'auto'); // activate link
     });
   });
 }
@@ -365,7 +366,7 @@ function setLinks() {
 function unsetLinks() {
   $('.post a').each((i, el) => {
     let a = $(el);
-    a.css('pointerEvents', ''); // activate link
+    a.css('pointerEvents', ''); // return to default state
     let href = a.attr('data-href-orig');
     if (href) a.attr('href', href);
   });
