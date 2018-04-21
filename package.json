@@ -4,7 +4,7 @@
   "description": "",
   "repository": "github:StudioProcess/talk-hub",
   "scripts": {
-    "start": "browser-sync start --server --port 8080 --no-notify --files *.html *.js",
+    "start": "sudo browser-sync start --server --port 80 --no-notify --browser 'google chrome' --files *.html *.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Process Studio <contact@process.studio> (https://process.studio)",
