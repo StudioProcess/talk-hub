@@ -8,6 +8,7 @@ let transitionTime = {
 };
 
 let colorizeOpacity = 0.85;
+let followerCount = 1617;
 
 let groups = {
   exoplanets: [113, 112, 111, 110, 109, 108, 107, ],
@@ -97,6 +98,8 @@ function init() {
   }, new Set(allNums())) );
   
   setLinks();
+  
+  setFollowerCount();
 }
 
 $( () => init() ); // run initalization on page load
@@ -370,6 +373,16 @@ function unsetLinks() {
     let href = a.attr('data-href-orig');
     if (href) a.attr('href', href);
   });
+}
+
+function setFollowerCount() {
+  let num = followerCount.toLocaleString('en');
+  $('.follower-count').attr('title', num).text(num);
+  
+  let $meta = $('meta[name=description]');
+  let desc = $meta.attr('content').replace('1,596', num);
+  $meta.attr('content', desc);
+  $('meta[property="og:description"]').attr('content', desc);
 }
 
 
