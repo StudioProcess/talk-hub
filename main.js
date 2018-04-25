@@ -10,7 +10,7 @@ let transitionTime = {
 let colorizeOpacity = 0.85;
 let followerCount = 1617;
 
-let groups = {
+let project = {
   exoplanets: [113, 112, 111, 110, 109, 108, 107, ],
   airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, ],
   pillars: [91, 86, 73, 71, 70, 69, 48, 45, 40, 38, ],
@@ -19,10 +19,11 @@ let groups = {
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ]
 };
-let nogroup; // posts without a group
+let noproject; // posts without a project
 
 let categories = {
-  commercial: [37, 46, 58, 66, 76, 87, 88, 99, 100, 104, 105 ], // add all from groups
+  commercial: [37, 46, 58, 66, 76, 87, 88, 99, 100, 104, 105 ], // add all from project
+  comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108],
   event_promo: [53, 53, 59, 65, 78, 80, 83, 92, 114, 115, 116 ],
   other: [52, 84]
 };
@@ -40,7 +41,7 @@ let keynoteSlides = {
   patterns: 87,
 };
 
-let colors = {
+let projectColors = {
   exoplanets: '#2551a7',
   airplane_geometry: '#1a1f39',
   pillars: '#9ce0eb',
@@ -102,8 +103,8 @@ async function init() {
   });
   
   // fill categories
-  Object.keys(groups).forEach(groupName => {
-    categories.commercial = categories.commercial.concat(groups[groupName]);
+  Object.keys(project).forEach(projectName => {
+    categories.commercial = categories.commercial.concat(project[projectName]);
   });
   
   // load post data
@@ -111,7 +112,7 @@ async function init() {
   
   setGlobals();
   
-  nogroup = Array.from( Object.values(groups).reduce((acc, grp) => {
+  noproject = Array.from( Object.values(project).reduce((acc, grp) => {
     // console.log(grp);
     grp.forEach( n => acc.delete(n) );
     return acc;
@@ -174,8 +175,8 @@ function getPost(i) { return $(`[data-num=${i}]`); }
 
 // find group name for post number
 function getGroup(i) {
-  for (let groupName of Object.keys(groups)) {
-    if ( groups[groupName].includes(i) ) return groupName;
+  for (let projectName of Object.keys(project)) {
+    if ( project[projectName].includes(i) ) return projectName;
   }
   return undefined;
 }
@@ -260,8 +261,8 @@ function toggleChrome(time=transitionTime.chrome) {
 // Add color overlay according to group membership
 function colorize(nums) {
   nums.forEach(i => {
-    let groupName = getGroup(i);
-    overlay([i], colors[groupName], colorizeOpacity);
+    let projectName = getGroup(i);
+    overlay([i], projectColors[projectName], colorizeOpacity);
   });
 }
 
@@ -271,12 +272,12 @@ function uncolorize(nums) {
 
 let focused = false; // some elements are focused or colorized
 function colorizeGroups() {
-  // overlay(nogroup, '#fff', 0.9);
-  dim(nogroup);
-  for (let groupName of Object.keys(groups)) {
-    // console.log(colors[groupName]);
-    undim(groups[groupName]);
-    overlay(groups[groupName], colors[groupName], colorizeOpacity);
+  // overlay(noproject, '#fff', 0.9);
+  dim(noproject);
+  for (let projectName of Object.keys(project)) {
+    // console.log(projectColors[projectName]);
+    undim(project[projectName]);
+    overlay(project[projectName], projectColors[projectName], colorizeOpacity);
   }
   focused = true;
 }
@@ -296,7 +297,7 @@ let focusedGroup = -1;
 let focusedState = 2; // 0..focus group with color, 1..focus group without color, 2..colorize none, 3..colorize all
 
 function focusGroup(grpNum, withColor = false) {
-  let nums = groups[order[grpNum]];
+  let nums = project[order[grpNum]];
   let others = invertNums(nums);
   undim(nums);
   if (withColor) colorize(nums); else uncolorize(nums);
@@ -338,8 +339,8 @@ function focusPrev() { focusNext(-1); }
 let sorted = false;
 function sort() {
   scramble(() => {
-    order.forEach((groupName, i) => {
-      groups[groupName].forEach(num => {
+    order.forEach((projectName, i) => {
+      project[projectName].forEach(num => {
         getPost(num).css('order', i-order.length);
       });
     });
@@ -382,9 +383,9 @@ function scramble(cb, time=transitionTime.scramble) {
 function setLinks() {
   $('.post a').css('pointerEvents', 'none'); // deactivate all links
   // set group links
-  Object.keys(groups).forEach(groupName => {
-    let href = 'appswitch://keynote?slide=' + keynoteSlides[groupName];
-    groups[groupName].forEach(num => {
+  Object.keys(project).forEach(projectName => {
+    let href = 'appswitch://keynote?slide=' + keynoteSlides[projectName];
+    project[projectName].forEach(num => {
       let a = getPost(num).find('a');
       a.attr('data-href-orig', a.attr('href'));
       a.attr('href', href);
