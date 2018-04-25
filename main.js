@@ -381,7 +381,7 @@ function focusNext(delta = 1) {
   return focusProject(focusedProject+delta);
 }
 
-function focusPrev() {
+function focusPrev() { // eslint-disable-line no-unused-vars
   return focusNext(-1);
 }
 
@@ -415,7 +415,8 @@ function focusPrev() {
 
 let sorted = false;
 function sort() {
-  scramble(() => {
+  sorted = true;
+  return scramble().then(() => {
     let first = [];
     order.forEach((projectName, i) => {
       dedupe(project[projectName]).forEach(num => {
@@ -427,38 +428,38 @@ function sort() {
       getPost(num).css('order', 0);
     });
   });
-  sorted = true;
 }
 
 function unsort() {
-  scramble(() => {
+  sorted = false;
+  return scramble().then(() => {
     $('.post').css('order',0);
   });
-  sorted = false;
 }
 
 function toggleSort() {
-  if (!sorted) sort();
-  else unsort();
+  return !sorted ? sort() : unsort();
 }
 
-function scramble(cb, time=transitionTime.scramble) {
+function scramble(time=transitionTime.scramble) {
   let fps = 30;
   let int = 1000/fps;
   let total = Math.floor(time/int);
   let i = 0;
   
-  let x = setInterval(() => {
-    $('.post').each((i, el) => {
-      let rnd = Math.floor(Math.random()*n);
-      // console.log(el, rnd);
-      $(el).css( 'order', rnd );
-    });
-    if (i++ >= total) {
-      clearInterval(x);
-      if (cb) cb();
-    }
-  }, int);
+  return new Promise(resolve => {
+    let x = setInterval(() => {
+      $('.post').each((i, el) => {
+        let rnd = Math.floor(Math.random()*n);
+        // console.log(el, rnd);
+        $(el).css( 'order', rnd );
+      });
+      if (i++ >= total) {
+        clearInterval(x);
+        resolve();
+      }
+    }, int);
+  });
 }
 
 // set links to keynote
