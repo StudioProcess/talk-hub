@@ -19,7 +19,7 @@ let project = {
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
   
-  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59], // not used in presentation
+  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66], // not used in presentation
 };
 let noproject; // posts without a project
 
@@ -64,7 +64,7 @@ let projectColors = {
   flash_flooding: '#8b689e',
   universe: '#fd717a',
   patterns: '#f2d390',
-  other: '#787878'
+  other: '#e8e8e8'
 };
 
 let hues = {
@@ -500,32 +500,44 @@ function colorizeByMonth(nums = allNums()) {
 
 function colorizeLastYear() {
   let last = numsFrom(37);
-  colorizeByMonth(last);
-  dim(invertNums(last));
+  let p = colorizeByMonth(last);
+  let q = dim(invertNums(last));
+  
+  return Promise.all([p, q]).then(() => {
+    return rmOverlay(last);
+  });
 }
 
 function colorizeCategories() {
-  uncolorizeAll();
+  let promises = [];
+  promises.push( uncolorizeAll() );
   let colored = [];
   Object.keys(categories).filter(c => c != 'comm_used').forEach(c => {
-    overlay(categories[c], categoryColors[c], colorizeOpacity);
+    let p = overlay(categories[c], categoryColors[c], colorizeOpacity);
+    promises.push(p);
     colored = colored.concat(categories[c]);
   });
-  dim(invertNums(colored));
+  promises.push( dim(invertNums(colored)) );
+  return Promise.all(promises);
 }
 
 function colorizeCommercial() {
-  uncolorizeAll();
+  let p = uncolorizeAll();
   let nums = categories['commercial'];
-  overlay(nums, categoryColors['commercial'], colorizeOpacity);
-  dim(invertNums(nums));
+  let q = overlay(nums, categoryColors['commercial'], colorizeOpacity);
+  let r = dim(invertNums(nums));
+  
+  return Promise.all([p, q, r]).then(() => {
+    return rmOverlay(nums);
+  });
 }
 
 function colorizeCommUsed() {
-  uncolorizeAll();
+  let p = uncolorizeAll();
   // rmOverlay(categories['commercial']);
-  overlay(categories['comm_used'], categoryColors['comm_used'], colorizeOpacity);
-  dim(invertNums( categories['comm_used'].concat(categories['commercial']) ));
+  let q = overlay(categories['comm_used'], categoryColors['comm_used'], colorizeOpacity);
+  let r = dim(invertNums( categories['comm_used'].concat(categories['commercial']) ));
+  return Promise.all([p, q, r]);
 }
 
 function randomFocus() {
@@ -597,25 +609,25 @@ function setState(num) {
     break;
   
   case 2:
-    colorizeLastYear();
+    colorizeLastYear().then(logState);
     break;
   
   case 3:
-    colorizeCategories();
+    colorizeCategories().then(logState);
     break;
   
   case 4:
-    colorizeCommercial();
+    colorizeCommercial().then(logState);
     break;
   
   case 5:
-    colorizeCommUsed();
+    colorizeCommUsed().then(logState);
     break;
   
   case 6:
-    colorizeProjects();
+    colorizeProjects().then(logState);
     break;
-    
+        
   default:
     console.warn('unknown state');
     break;
