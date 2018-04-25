@@ -45,9 +45,10 @@ let colors = {
 };
 
 let p, n; // posts + number of posts
+let d; // post data (hash indexed by post num);
 
 
-function init() {
+async function init() {
   // Add styles
   $('body').prepend(`
     <style>
@@ -88,6 +89,10 @@ function init() {
   p.append((i) => {
     return '<div class="post-num">' + (n-i) + '</div>';
   });
+  
+  // load post data
+  d = await fetch('posts.json').then(res => res.json());
+  console.log(d);
   
   setGlobals();
   
