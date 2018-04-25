@@ -17,15 +17,30 @@ let project = {
   space_colonization: [77, 60, 57, 56, 55, 51, ],
   flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, ],
   universe: [85, 82, 81, 79, 68, 67, ],
-  patterns: [64, 63, 62, 61, 44, 42, 41, ]
+  patterns: [64, 63, 62, 61, 44, 42, 41, ],
+  
+  other: [87, 88, 99, 100,  76,  104, 105], // not used in presentation
 };
 let noproject; // posts without a project
 
+// let unused_projects = { // not used in presentation
+//   mak: [87, 88, 99, 100],
+//   brupa: [76],
+//   waves: [104, 105],
+// };
+
 let categories = {
-  commercial: [37, 46, 58, 66, 76, 87, 88, 99, 100, 104, 105 ], // add all from project
+  commercial: [37, 46, 58, 59, 66, 76, 87, 88, 99, 100, 104, 105 ], // add all from project in init()
   comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108],
-  event_promo: [53, 53, 59, 65, 78, 80, 83, 92, 114, 115, 116 ],
+  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116 ],
   other: [52, 84]
+};
+
+let categoryColors = {
+  commercial: '#f59090',
+  comm_used: '#ff3838',
+  event_promo: '#594190',
+  other: '#349a3f'
 };
 
 // Newest to oldest
@@ -46,9 +61,10 @@ let projectColors = {
   airplane_geometry: '#1a1f39',
   pillars: '#9ce0eb',
   space_colonization: '#689e86',
-  flash_flooding: '#787878',
+  flash_flooding: '#8b689e',
   universe: '#fd717a',
   patterns: '#f2d390',
+  other: '#787878'
 };
 
 let hues = {
@@ -339,10 +355,15 @@ function focusPrev() { focusNext(-1); }
 let sorted = false;
 function sort() {
   scramble(() => {
+    let first = [];
     order.forEach((projectName, i) => {
       project[projectName].forEach(num => {
         getPost(num).css('order', i-order.length);
       });
+      first = first.concat(project[projectName]);
+    });
+    project['other'].forEach(num => {
+      getPost(num).css('order', 0);
     });
   });
   sorted = true;
@@ -420,10 +441,11 @@ function shade(shade, shades=10, hue=0, sat=100, narrow=20 ) {
 }
 
 function colorizeByMonth(nums = allNums()) {
-  // year 2 starts april 2017
+  undimAll();
   nums.forEach(num => {
     let date = new Date(d[num].taken_at_timestamp * 1000);
     // console.log(num, date);
+    // year 2 starts april 2017
     let month = date.getMonth()-3 + (date.getFullYear()-2017)*12; // so year2 has month >= 0
     // if (date.getFullYear() > 2017 || (date.getFullYear() == 2017 && date.getMonth() >= 3)) {
     if (month >= 0) {
@@ -444,9 +466,28 @@ function colorizeByMonth(nums = allNums()) {
 
 function colorizeLastYear() {
   let last = numsFrom(37);
-  console.log(last);
   colorizeByMonth(last);
   dim(invertNums(last));
+}
+
+function colorizeCategories() {
+  let colored = [];
+  Object.keys(categories).filter(c => c != 'comm_used').forEach(c => {
+    overlay(categories[c], categoryColors[c], colorizeOpacity);
+    colored = colored.concat(categories[c]);
+  });
+  dim(invertNums(colored));
+}
+
+function colorizeCommercial() {
+  overlay(categories['commercial'], categoryColors['commercial'], colorizeOpacity);
+  dim(invertNums(categories['commercial']));
+}
+
+function colorizeCommUsed() {
+  overlay(categories['commercial'], categoryColors['commercial'], colorizeOpacity);
+  overlay(categories['comm_used'], categoryColors['comm_used'], colorizeOpacity);
+  dim(invertNums(categories['commercial']));
 }
 
 // Add functions to global scope for testing
@@ -474,6 +515,9 @@ function setGlobals() {
   
   window.colorize = colorize;
   window.uncolorize = uncolorize;
+  window.colorizeCategories = colorizeCategories;
+  window.colorizeCommercial = colorizeCommercial;
+  window.colorizeCommUsed = colorizeCommUsed;
   
   window.focusGroup = focusGroup;
   
