@@ -50,6 +50,11 @@ let colors = {
   patterns: '#f2d390',
 };
 
+let hues = {
+  year1: 200,
+  year2: 10,
+};
+
 let p, n; // posts + number of posts
 let d; // post data (hash indexed by post num);
 
@@ -100,11 +105,9 @@ async function init() {
   Object.keys(groups).forEach(groupName => {
     categories.commercial = categories.commercial.concat(groups[groupName]);
   });
-  console.log(categories);
   
   // load post data
   d = await fetch('posts.json').then(res => res.json());
-  console.log(d);
   
   setGlobals();
   
@@ -152,6 +155,8 @@ $(document).on('keydown', (e) => {
   else if (e.keyCode == 39) { focusNext(); } // right arrow
   else if (e.keyCode == 37) { focusPrev(); } // left arrow
   
+  else if (e.key == 'm' || e.key == 'M') { colorizeByMonth(); }
+  else if (e.key == 'l' || e.key == 'L') { colorizeLastYear(); }
 });
 
 function invertNums(arr) {
@@ -160,6 +165,11 @@ function invertNums(arr) {
   return out;
 }
 function allNums() { return invertNums([]); }
+function numsFrom(num) {
+  let out = [];
+  for (let i=num; i<=n; i++) { out.push(i); }
+  return out;
+}
 function getPost(i) { return $(`[data-num=${i}]`); }
 
 // find group name for post number
@@ -402,6 +412,41 @@ function setFollowerCount() {
   $('meta[property="og:description"]').attr('content', desc);
 }
 
+function hsl(hue, sat=100, lig=50) { return `hsl(${hue}, ${sat}%, ${lig}%)`;}
+function shade(shade, shades=10, hue=0, sat=100, narrow=20 ) {
+  let lig = narrow + (shade/(shades-1))*(100-narrow*2);
+  return hsl(hue, sat, lig);
+}
+
+function colorizeByMonth(nums = allNums()) {
+  // year 2 starts april 2017
+  nums.forEach(num => {
+    let date = new Date(d[num].taken_at_timestamp * 1000);
+    // console.log(num, date);
+    let month = date.getMonth()-3 + (date.getFullYear()-2017)*12; // so year2 has month >= 0
+    // if (date.getFullYear() > 2017 || (date.getFullYear() == 2017 && date.getMonth() >= 3)) {
+    if (month >= 0) {
+      // year 2
+      // console.log(month);
+      // overlay([num], hsl(hues.year2), colorizeOpacity);
+      overlay([num], shade(month, 13, hues.year2), colorizeOpacity);
+    } else {
+      // year 1
+      // console.log(month);
+      // -month-1
+      // overlay([num], hsl(hues.year1), colorizeOpacity);
+      overlay([num], shade(month+18, 18, hues.year1), colorizeOpacity);
+    }
+  });
+  focused = true;
+}
+
+function colorizeLastYear() {
+  let last = numsFrom(37);
+  console.log(last);
+  colorizeByMonth(last);
+  dim(invertNums(last));
+}
 
 // Add functions to global scope for testing
 function setGlobals() {
