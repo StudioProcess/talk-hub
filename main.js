@@ -19,7 +19,7 @@ let project = {
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
   
-  other: [87, 88, 99, 100,  76,  104, 105], // not used in presentation
+  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59], // not used in presentation
 };
 let noproject; // posts without a project
 
@@ -30,7 +30,7 @@ let noproject; // posts without a project
 // };
 
 let categories = {
-  commercial: [37, 46, 58, 59, 66, 76, 87, 88, 99, 100, 104, 105 ], // add all from project in init()
+  commercial: [37, 46, 58, 59, 66], // add all from project in init() // 76, 87, 88, 99, 100, 104, 105
   comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108],
   event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116 ],
   other: [52, 84]
@@ -169,11 +169,14 @@ $(document).on('keydown', (e) => {
   
   else if (e.key == 's' || e.key == 'S') { toggleSort(); }
   
-  else if (e.keyCode == 39) { focusNext(); } // right arrow
-  else if (e.keyCode == 37) { focusPrev(); } // left arrow
+  // else if (e.keyCode == 39) { focusNext(); } // right arrow
+  // else if (e.keyCode == 37) { focusPrev(); } // left arrow
+  else if (e.keyCode == 39) { nextState(); } // right arrow
+  else if (e.keyCode == 37) { prevState(); } // left arrow
   
   else if (e.key == 'm' || e.key == 'M') { colorizeByMonth(); }
   else if (e.key == 'l' || e.key == 'L') { colorizeLastYear(); }
+  else if (e.key == 'r' || e.key == 'R') { testState(); }
 });
 
 function invertNums(arr) {
@@ -187,6 +190,7 @@ function numsFrom(num) {
   for (let i=num; i<=n; i++) { out.push(i); }
   return out;
 }
+function dedupe(nums) { return Array.from(new Set(nums)); }
 function getPost(i) { return $(`[data-num=${i}]`); }
 
 // find group name for post number
@@ -197,29 +201,29 @@ function getGroup(i) {
   return undefined;
 }
 
-function show(arr, time=transitionTime.showHide) { arr.forEach(i => getPost(i).show(time)); }
+function show(arr, time=transitionTime.showHide) { dedupe(arr).forEach(i => getPost(i).show(time)); }
 function showAll() { show(allNums()); }
-function hide(arr, time=transitionTime.showHide) { arr.forEach(i => getPost(i).hide(time)); }
+function hide(arr, time=transitionTime.showHide) { dedupe(arr).forEach(i => getPost(i).hide(time)); }
 
-function dim(arr, time=transitionTime.dim) { arr.forEach(i => getPost(i).css('transitionDuration', time+'ms').addClass('dim')); }
-function undim(arr, time=transitionTime.dim) { arr.forEach(i => getPost(i).css('transitionDuration', time+'ms').removeClass('dim')); }
+function dim(arr, time=transitionTime.dim) { dedupe(arr).forEach(i => getPost(i).css('transitionDuration', time+'ms').addClass('dim')); }
+function undim(arr, time=transitionTime.dim) { dedupe(arr).forEach(i => getPost(i).css('transitionDuration', time+'ms').removeClass('dim')); }
 function undimAll(time=transitionTime.dim) { undim(allNums(), time); }
 
 function highlight(arr) { undim(arr); dim(invertNums(arr)); }
 
 function overlay(arr, color='#000', opacity=0.5, time=transitionTime.overlay) { 
-  arr.forEach(i => {
+  dedupe(arr).forEach(i => {
     let overlay = getPost(i).find('.overlay');
     if (overlay.css('display') == 'none') overlay.css({'opacity':0, 'display':'flex'});
-    overlay.animate( {'backgroundColor':color, 'opacity':opacity}, time );
+    overlay.stop().animate( {'backgroundColor':color, 'opacity':opacity}, time );
   }); 
 }
 function rmOverlay(arr, time=transitionTime.overlay) {
-  arr.forEach(i => {
-    getPost(i).find('.overlay').fadeOut(time);
+  dedupe(arr).forEach(i => {
+    getPost(i).find('.overlay').stop().fadeOut(time);
   }); 
 }
-function rmOverlayAll() { rmOverlay(allNums()); }
+function rmOverlayAll(time=transitionTime.overlay) { rmOverlay(allNums(), time); }
 
 function resizeAll(size=1, time=transitionTime.resize) {
   // calc sizing (size=1: 293/935 total, 28 margin)
@@ -276,7 +280,7 @@ function toggleChrome(time=transitionTime.chrome) {
 
 // Add color overlay according to group membership
 function colorize(nums) {
-  nums.forEach(i => {
+  dedupe(nums).forEach(i => {
     let projectName = getGroup(i);
     overlay([i], projectColors[projectName], colorizeOpacity);
   });
@@ -287,7 +291,7 @@ function uncolorize(nums) {
 }
 
 let focused = false; // some elements are focused or colorized
-function colorizeGroups() {
+function colorizeProjects() {
   // overlay(noproject, '#fff', 0.9);
   dim(noproject);
   for (let projectName of Object.keys(project)) {
@@ -298,22 +302,22 @@ function colorizeGroups() {
   focused = true;
 }
 
-function uncolorizeGroups() {
-  rmOverlayAll();
+function uncolorizeAll() {
   undimAll();
+  rmOverlayAll();
   focused = false;
 }
 
 function toggleColorize() {
-  if (!focused) colorizeGroups();
-  else uncolorizeGroups();
+  if (!focused) colorizeProjects();
+  else uncolorizeAll();
 }
 
 let focusedGroup = -1;
 let focusedState = 2; // 0..focus group with color, 1..focus group without color, 2..colorize none, 3..colorize all
 
-function focusGroup(grpNum, withColor = false) {
-  let nums = project[order[grpNum]];
+function focusProject(grpNum, withColor = false) {
+  let nums = dedupe( project[order[grpNum]] );
   let others = invertNums(nums);
   undim(nums);
   if (withColor) colorize(nums); else uncolorize(nums);
@@ -339,30 +343,29 @@ function focusNext(stateOffset = 1) {
   console.log(focusedGroup, focusedState);
   
   if (focusedState == 0) {
-    focusGroup(focusedGroup, true);
+    focusProject(focusedGroup, true);
   } else if (focusedState == 1) {
-    focusGroup(focusedGroup, false);
+    focusProject(focusedGroup, false);
   } else if (focusedState == 2) {
-    uncolorizeGroups();
+    uncolorizeAll();
   } else if (focusedState == 3) {
-    colorizeGroups();
+    colorizeProjects();
   }
 }
 
 function focusPrev() { focusNext(-1); }
-
 
 let sorted = false;
 function sort() {
   scramble(() => {
     let first = [];
     order.forEach((projectName, i) => {
-      project[projectName].forEach(num => {
+      dedupe(project[projectName]).forEach(num => {
         getPost(num).css('order', i-order.length);
       });
       first = first.concat(project[projectName]);
     });
-    project['other'].forEach(num => {
+    dedupe(project['other']).forEach(num => {
       getPost(num).css('order', 0);
     });
   });
@@ -441,7 +444,8 @@ function shade(shade, shades=10, hue=0, sat=100, narrow=20 ) {
 }
 
 function colorizeByMonth(nums = allNums()) {
-  undimAll();
+  nums = dedupe(nums);
+  undim(nums);
   nums.forEach(num => {
     let date = new Date(d[num].taken_at_timestamp * 1000);
     // console.log(num, date);
@@ -461,6 +465,7 @@ function colorizeByMonth(nums = allNums()) {
       overlay([num], shade(month+18, 18, hues.year1), colorizeOpacity);
     }
   });
+  uncolorize(invertNums(nums));
   focused = true;
 }
 
@@ -471,6 +476,7 @@ function colorizeLastYear() {
 }
 
 function colorizeCategories() {
+  uncolorizeAll();
   let colored = [];
   Object.keys(categories).filter(c => c != 'comm_used').forEach(c => {
     overlay(categories[c], categoryColors[c], colorizeOpacity);
@@ -480,14 +486,29 @@ function colorizeCategories() {
 }
 
 function colorizeCommercial() {
-  overlay(categories['commercial'], categoryColors['commercial'], colorizeOpacity);
-  dim(invertNums(categories['commercial']));
+  uncolorizeAll();
+  let nums = categories['commercial'];
+  overlay(nums, categoryColors['commercial'], colorizeOpacity);
+  dim(invertNums(nums));
 }
 
 function colorizeCommUsed() {
-  overlay(categories['commercial'], categoryColors['commercial'], colorizeOpacity);
+  uncolorizeAll();
+  // rmOverlay(categories['commercial']);
   overlay(categories['comm_used'], categoryColors['comm_used'], colorizeOpacity);
-  dim(invertNums(categories['commercial']));
+  dim(invertNums( categories['comm_used'].concat(categories['commercial']) ));
+}
+
+function randomFocus() {
+  allNums().forEach(i => {
+    overlay([i], '#ff0000', 0.95);
+    if (Math.random() < 0.5) dim([i]); else undim([i]);
+  });
+}
+
+function testState() {
+  randomFocus();
+  setState(state);
 }
 
 // Add functions to global scope for testing
@@ -519,11 +540,68 @@ function setGlobals() {
   window.colorizeCommercial = colorizeCommercial;
   window.colorizeCommUsed = colorizeCommUsed;
   
-  window.focusGroup = focusGroup;
+  window.focusProject = focusProject;
   
   window.sort = sort;
   window.unsort = unsort;
   
   window.setLinks = setLinks;
   window.unsetLinks = unsetLinks;
+}
+
+
+// This sets only focus/colorization (not size)
+let state = 0;
+let numStates = 7;
+function setState(num) {
+  switch (num) {
+  
+  case 0:
+    uncolorizeAll();
+    break;
+  
+  case 1:
+    colorizeByMonth();
+    break;
+  
+  case 2:
+    colorizeLastYear();
+    break;
+  
+  case 3:
+    colorizeCategories();
+    break;
+  
+  case 4:
+    colorizeCommercial();
+    break;
+  
+  case 5:
+    colorizeCommUsed();
+    break;
+  
+  case 6:
+    colorizeProjects();
+    break;
+    
+  default:
+    console.warn('unknown state');
+    break;
+  }
+  
+  console.log("state " + state + "/" + (numStates-1));
+}
+
+function nextState(delta = 1) {
+  state += delta;
+  if (state >= numStates) {
+    state %= numStates;
+  } else if (state < 0) {
+    state = state % numStates + numStates;
+  }
+  setState(state);
+}
+
+function prevState() {
+  nextState(-1);
 }
