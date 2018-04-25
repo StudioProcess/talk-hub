@@ -337,47 +337,81 @@ function toggleColorize() {
   else uncolorizeAll();
 }
 
-let focusedGroup = -1;
-let focusedState = 2; // 0..focus group with color, 1..focus group without color, 2..colorize none, 3..colorize all
+let focusedProject = -1;
+// let focusedState = 2; // 0..focus group with color, 1..focus group without color, 2..colorize none, 3..colorize all
 
-function focusProject(grpNum, withColor = false) {
-  let nums = dedupe( project[order[grpNum]] );
+function colorizeProject(projNum, withColor = false) {
+  let nums = dedupe( project[order[projNum]] );
   let others = invertNums(nums);
-  undim(nums);
-  if (withColor) colorize(nums); else uncolorize(nums);
-  dim(others);
-  uncolorize(others);
+  let p = [];
+  p.push( undim(nums) );
+  if (withColor) {
+    p.push( colorize(nums) ); 
+  } else {
+    p.push( uncolorize(nums) );
+  }
+  p.push( dim(others) );
+  p.push( uncolorize(others) );
   focused = true;
-  focusedGroup = grpNum;
+  focusedProject = projNum;
+  return Promise.all(p);
 }
 
-function focusNext(stateOffset = 1) {
-  // change state
-  focusedState += stateOffset;
-  if (focusedState >= 4) {
-    focusedGroup++;
-    if (focusedGroup >= order.length) focusedGroup %= order.length;
-    focusedState %= 4;
-  } else if (focusedState < 0) {
-    focusedGroup--;
-    if (focusedGroup < 0) focusedGroup = focusedGroup % order.length + order.length;
-    focusedState = focusedState % 4 + 4;
+function focusProject(projNum, withIntro = true) {
+  let numProjects = order.length;
+  focusedProject = projNum;
+  if (focusedProject >= numProjects) {
+    focusedProject %= numProjects;
+  } else if (focusedProject < 0) {
+    focusedProject = focusedProject % numProjects + numProjects;
   }
   
-  console.log(focusedGroup, focusedState);
-  
-  if (focusedState == 0) {
-    focusProject(focusedGroup, true);
-  } else if (focusedState == 1) {
-    focusProject(focusedGroup, false);
-  } else if (focusedState == 2) {
-    uncolorizeAll();
-  } else if (focusedState == 3) {
-    colorizeProjects();
+  // intro
+  let intro = Promise.resolve();
+  if (withIntro) {
+    // intro = uncolorizeAll().then(colorizeProjects);
+    intro = colorizeProjects();
   }
+  // focus`
+  return intro.then( () => colorizeProject(projNum, true) )
+    .then( () => colorizeProject(projNum, false) );
 }
 
-function focusPrev() { focusNext(-1); }
+function focusNext(delta = 1) {
+  return focusProject(focusedProject+delta);
+}
+
+function focusPrev() {
+  return focusNext(-1);
+}
+
+// function focusNext(stateOffset = 1) {
+//   // change state
+//   focusedState += stateOffset;
+//   if (focusedState >= 4) {
+//     focusedGroup++;
+//     if (focusedGroup >= order.length) focusedGroup %= order.length;
+//     focusedState %= 4;
+//   } else if (focusedState < 0) {
+//     focusedGroup--;
+//     if (focusedGroup < 0) focusedGroup = focusedGroup % order.length + order.length;
+//     focusedState = focusedState % 4 + 4;
+//   }
+// 
+//   console.log(focusedGroup, focusedState);
+// 
+//   if (focusedState == 0) {
+//     focusProject(focusedGroup, true);
+//   } else if (focusedState == 1) {
+//     focusProject(focusedGroup, false);
+//   } else if (focusedState == 2) {
+//     uncolorizeAll();
+//   } else if (focusedState == 3) {
+//     colorizeProjects();
+//   }
+// }
+
+// function focusPrev() { focusNext(-1); }
 
 let sorted = false;
 function sort() {
@@ -596,8 +630,9 @@ function logState() {
 
 // This sets only focus/colorization (not size)
 let state = 0;
-let numStates = 7;
+let numStates = 7 + order.length;
 function setState(num) {
+  let proj;
   switch (num) {
   
   case 0:
@@ -629,7 +664,14 @@ function setState(num) {
     break;
         
   default:
-    console.warn('unknown state');
+    // check for project focus
+    proj = num - 7;
+    if (proj >= 0 && proj < order.length) {
+      let withIntro = proj > 0;
+      focusProject(proj, withIntro).then(logState);
+    } else {
+      console.warn('unknown state');
+    }
     break;
   }
   
