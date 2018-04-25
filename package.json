@@ -5,7 +5,8 @@
   "repository": "github:StudioProcess/talk-hub",
   "scripts": {
     "start": "sudo browser-sync start --server --port 80 --no-notify --browser 'google chrome' --files *.html *.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scrape": "node --experimental-modules scrape"
   },
   "author": "Process Studio <contact@process.studio> (https://process.studio)",
   "license": "AGPL-3.0",
@@ -15,6 +16,9 @@
     "seedrandom": "^2.4.3"
   },
   "devDependencies": {
-    "browser-sync": "^2.23.6"
+    "browser-sync": "^2.23.6",
+    "cheerio": "^1.0.0-rc.2",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5"
   }
 }
