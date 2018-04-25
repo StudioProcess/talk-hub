@@ -21,6 +21,12 @@ let groups = {
 };
 let nogroup; // posts without a group
 
+let categories = {
+  commercial: [37, 46, 58, 66, 76, 87, 88, 99, 100, 104, 105 ], // add all from groups
+  event_promo: [53, 53, 59, 65, 78, 80, 83, 92, 114, 115, 116 ],
+  other: [52, 84]
+};
+
 // Newest to oldest
 let order = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
 
@@ -89,6 +95,12 @@ async function init() {
   p.append((i) => {
     return '<div class="post-num">' + (n-i) + '</div>';
   });
+  
+  // fill categories
+  Object.keys(groups).forEach(groupName => {
+    categories.commercial = categories.commercial.concat(groups[groupName]);
+  });
+  console.log(categories);
   
   // load post data
   d = await fetch('posts.json').then(res => res.json());
