@@ -179,6 +179,12 @@ $(document).on('keydown', (e) => {
   else if (e.key == 'r' || e.key == 'R') { testState(); }
 });
 
+function resolveAfter(time) {
+  return new Promise(resolve => {
+    setTimeout(resolve, time);
+  });
+}
+
 function invertNums(arr) {
   let out = [];
   for (let i=1; i<=n; i++) { if ( !arr.includes(i) ) out.push(i); }
@@ -205,25 +211,36 @@ function show(arr, time=transitionTime.showHide) { dedupe(arr).forEach(i => getP
 function showAll() { show(allNums()); }
 function hide(arr, time=transitionTime.showHide) { dedupe(arr).forEach(i => getPost(i).hide(time)); }
 
-function dim(arr, time=transitionTime.dim) { dedupe(arr).forEach(i => getPost(i).css('transitionDuration', time+'ms').addClass('dim')); }
-function undim(arr, time=transitionTime.dim) { dedupe(arr).forEach(i => getPost(i).css('transitionDuration', time+'ms').removeClass('dim')); }
-function undimAll(time=transitionTime.dim) { undim(allNums(), time); }
+function dim(arr, time=transitionTime.dim) {
+  dedupe(arr).forEach(i => getPost(i).css('transitionDuration', time+'ms').addClass('dim'));
+  return resolveAfter(time);
+}
+function undim(arr, time=transitionTime.dim) { 
+  dedupe(arr).forEach(i => getPost(i).css('transitionDuration', time+'ms').removeClass('dim'));
+  return resolveAfter(time);
+}
+function undimAll(time=transitionTime.dim) { undim(allNums(), time); return resolveAfter(time); }
 
-function highlight(arr) { undim(arr); dim(invertNums(arr)); }
+function highlight(arr, time=transitionTime.dim) { undim(arr, time); dim(invertNums(arr), time); return resolveAfter(time); }
 
-function overlay(arr, color='#000', opacity=0.5, time=transitionTime.overlay) { 
+function overlay(arr, color='#000', opacity=0.5, time=transitionTime.overlay) {
+  let overlay;
   dedupe(arr).forEach(i => {
-    let overlay = getPost(i).find('.overlay');
+    overlay = getPost(i).find('.overlay');
     if (overlay.css('display') == 'none') overlay.css({'opacity':0, 'display':'flex'});
     overlay.stop().animate( {'backgroundColor':color, 'opacity':opacity}, time );
-  }); 
+  });
+  return overlay ? overlay.promise() : Promise.resolve(); // Resolves when animation finishes
 }
 function rmOverlay(arr, time=transitionTime.overlay) {
+  let overlay;
   dedupe(arr).forEach(i => {
-    getPost(i).find('.overlay').stop().fadeOut(time);
-  }); 
+    overlay = getPost(i).find('.overlay');
+    overlay.stop().fadeOut(time);
+  });
+  return overlay ? overlay.promise() : Promise.resolve();
 }
-function rmOverlayAll(time=transitionTime.overlay) { rmOverlay(allNums(), time); }
+function rmOverlayAll(time=transitionTime.overlay) { return rmOverlay(allNums(), time); }
 
 function resizeAll(size=1, time=transitionTime.resize) {
   // calc sizing (size=1: 293/935 total, 28 margin)
@@ -280,32 +297,39 @@ function toggleChrome(time=transitionTime.chrome) {
 
 // Add color overlay according to group membership
 function colorize(nums) {
+  let promises = [];
   dedupe(nums).forEach(i => {
     let projectName = getGroup(i);
-    overlay([i], projectColors[projectName], colorizeOpacity);
+    let p = overlay([i], projectColors[projectName], colorizeOpacity);
+    promises.push(p);
   });
+  return Promise.all(promises);
 }
 
 function uncolorize(nums) {
-  rmOverlay(nums);
+  return rmOverlay(nums);
 }
 
 let focused = false; // some elements are focused or colorized
 function colorizeProjects() {
   // overlay(noproject, '#fff', 0.9);
-  dim(noproject);
+  let promises = [];
+  let p = dim(noproject); promises.push(p);
   for (let projectName of Object.keys(project)) {
     // console.log(projectColors[projectName]);
-    undim(project[projectName]);
-    overlay(project[projectName], projectColors[projectName], colorizeOpacity);
+    let q = undim(project[projectName]);
+    let r = overlay(project[projectName], projectColors[projectName], colorizeOpacity);
+    promises.push(q, r);
   }
   focused = true;
+  return Promise.all(promises);
 }
 
 function uncolorizeAll() {
-  undimAll();
-  rmOverlayAll();
+  let p = undimAll();
+  let q = rmOverlayAll();
   focused = false;
+  return Promise.all([p, q]);
 }
 
 function toggleColorize() {
@@ -445,28 +469,33 @@ function shade(shade, shades=10, hue=0, sat=100, narrow=20 ) {
 
 function colorizeByMonth(nums = allNums()) {
   nums = dedupe(nums);
-  undim(nums);
+  let promises = [];
+  let p = undim(nums); promises.push(p);
   nums.forEach(num => {
     let date = new Date(d[num].taken_at_timestamp * 1000);
     // console.log(num, date);
     // year 2 starts april 2017
     let month = date.getMonth()-3 + (date.getFullYear()-2017)*12; // so year2 has month >= 0
     // if (date.getFullYear() > 2017 || (date.getFullYear() == 2017 && date.getMonth() >= 3)) {
+    let q;
     if (month >= 0) {
       // year 2
       // console.log(month);
       // overlay([num], hsl(hues.year2), colorizeOpacity);
-      overlay([num], shade(month, 13, hues.year2), colorizeOpacity);
+      q = overlay([num], shade(month, 13, hues.year2), colorizeOpacity);
     } else {
       // year 1
       // console.log(month);
       // -month-1
       // overlay([num], hsl(hues.year1), colorizeOpacity);
-      overlay([num], shade(month+18, 18, hues.year1), colorizeOpacity);
+      q = overlay([num], shade(month+18, 18, hues.year1), colorizeOpacity);
     }
+    promises.push(q);
   });
-  uncolorize(invertNums(nums));
+  let r = uncolorize(invertNums(nums));
+  promises.push(r);
   focused = true;
+  return Promise.all(promises);
 }
 
 function colorizeLastYear() {
@@ -549,6 +578,9 @@ function setGlobals() {
   window.unsetLinks = unsetLinks;
 }
 
+function logState() {
+  console.log('state: ', state);
+}
 
 // This sets only focus/colorization (not size)
 let state = 0;
@@ -557,11 +589,11 @@ function setState(num) {
   switch (num) {
   
   case 0:
-    uncolorizeAll();
+    uncolorizeAll().then(logState);
     break;
   
   case 1:
-    colorizeByMonth();
+    colorizeByMonth().then(logState);
     break;
   
   case 2:
@@ -589,7 +621,7 @@ function setState(num) {
     break;
   }
   
-  console.log("state " + state + "/" + (numStates-1));
+  console.log(" going to state " + state + "/" + (numStates-1));
 }
 
 function nextState(delta = 1) {
