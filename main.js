@@ -8,7 +8,7 @@ let transitionTime = {
 };
 
 let colorizeOpacity = 0.85;
-let followerCount = 1617;
+let followerCount = 1622;
 
 let project = {
   exoplanets: [113, 112, 111, 110, 109, 108, 107, ],
@@ -19,7 +19,7 @@ let project = {
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
   
-  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66], // not used in presentation
+  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84], // not used in presentation
 };
 let noproject; // posts without a project
 
@@ -33,13 +33,13 @@ let categories = {
   commercial: [37, 46, 58, 59, 66], // add all from project in init() // 76, 87, 88, 99, 100, 104, 105
   comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108],
   event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116 ],
-  other: [52, 84]
+  other: []
 };
 
 let categoryColors = {
   commercial: '#f59090',
   comm_used: '#ff3838',
-  event_promo: '#594190',
+  event_promo: '#0562b9',
   other: '#349a3f'
 };
 
