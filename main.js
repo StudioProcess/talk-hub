@@ -658,7 +658,7 @@ function logState() {
 
 // This sets only focus/colorization (not size)
 let state = 0;
-let pstate = 0;
+let pstate = 0; // eslint-disable-line no-unused-vars
 
 let caseStates = 8;
 let numStates = caseStates + order.length;
