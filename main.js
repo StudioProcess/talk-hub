@@ -144,18 +144,19 @@ $( () => init() ); // run initalization on page load
 
 // Keyboard handler
 $(document).on('keydown', (e) => {
-  if (e.key == 'n' || e.key == 'N') { // show hide post numbering
+  if (e.key == 'n' || e.key == 'N' || e.keyCode == 32) { // N, SPACE .. show hide post numbering
     let shown = $('.post-num').eq(0).is(":visible");
     if (!shown) $('.post-num').fadeIn(100);
     else $('.post-num').fadeOut(100);
+    e.preventDefault();
   } 
   
-  else if (e.keyCode == 9) { // TAB .. toggle chrome
+  else if (e.keyCode == 9 || e.keyCode == 13) { // TAB, ENTER .. toggle chrome
     toggleChrome();
     e.preventDefault();
   }
   
-  else if (e.key == 'f' || e.key == 'F') { // f .. fullscreen
+  else if (e.key == 'f' || e.key == 'F') { // F .. fullscreen
     if (!document.webkitFullscreenElement) {
       document.querySelector('html').webkitRequestFullscreen();
     } else { document.webkitExitFullscreen(); }
@@ -173,6 +174,9 @@ $(document).on('keydown', (e) => {
   // else if (e.keyCode == 37) { focusPrev(); } // left arrow
   else if (e.keyCode == 39) { nextState(); } // right arrow
   else if (e.keyCode == 37) { prevState(); } // left arrow
+  
+  else if (e.keyCode == 40) { nextSize(); e.preventDefault(); } // down arrow
+  else if (e.keyCode == 38) { prevSize(); e.preventDefault(); } // up arrow
   
   else if (e.key == 'm' || e.key == 'M') { colorizeByMonth(); }
   else if (e.key == 'l' || e.key == 'L') { colorizeLastYear(); }
@@ -267,8 +271,31 @@ function resizeAll(size=1, time=transitionTime.resize) {
   // });
 }
 
-let chromeVisible = true;
 
+let currentSize = 0; // 0..normal, 1..medium, 2..small
+let numSizes = 3;
+function setSize(size) {
+  if (size >= numSizes) {
+    size %= numSizes;
+  } else if (size < 0) {
+    size = size % numSizes + numSizes;
+  }
+  switch (size) {
+  case 0: resizeAll(1); break;
+  case 1: resizeAll(0.24); break;
+  case 2: resizeAll(0.48); break;
+  }
+  currentSize = size;
+  console.log('size: ' + currentSize);
+}
+
+function nextSize(delta = 1) {
+  setSize(currentSize + delta);
+}
+function prevSize() { nextSize(-1); }
+
+
+let chromeVisible = true;
 function hideChrome(time=transitionTime.chrome) {
   // header, overlay buttons (video, multiple pics), footer, account info
   $('nav._68u16, ._lxd52, footer, header._mainc').stop()
