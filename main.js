@@ -631,7 +631,10 @@ function logState() {
 
 // This sets only focus/colorization (not size)
 let state = 0;
-let numStates = 7 + order.length;
+let pstate = 0;
+
+let caseStates = 8;
+let numStates = caseStates + order.length;
 function setState(num) {
   let proj;
   switch (num) {
@@ -660,13 +663,23 @@ function setState(num) {
     colorizeCommUsed().then(logState);
     break;
   
-  case 6:
-    colorizeProjects().then(logState);
+  case 6: // unsorted
+    Promise.all([
+      colorizeProjects(),
+      sorted ? unsort() : Promise.resolve()
+    ]).then(logState);
     break;
-        
+    
+  case 7: // sorted
+    Promise.all([
+      colorizeProjects(),
+      !sorted ? sort() : Promise.resolve()
+    ]).then(logState);
+    break;
+    
   default:
     // check for project focus
-    proj = num - 7;
+    proj = num - caseStates;
     if (proj >= 0 && proj < order.length) {
       let withIntro = proj > 0;
       focusProject(proj, withIntro).then(logState);
@@ -680,6 +693,7 @@ function setState(num) {
 }
 
 function nextState(delta = 1) {
+  pstate = state;
   state += delta;
   if (state >= numStates) {
     state %= numStates;
