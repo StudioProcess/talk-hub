@@ -47,13 +47,13 @@ let categoryColors = {
 let order = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
 
 let keynoteSlides = {
-  exoplanets: 4,
-  airplane_geometry: 18,
-  pillars: 34,
-  space_colonization: 53,
-  flash_flooding: 62,
-  universe: 78,
-  patterns: 87,
+  exoplanets: 5,
+  airplane_geometry: 20,
+  pillars: 37,
+  space_colonization: 58,
+  flash_flooding: 68,
+  universe: 85,
+  patterns: 99,
 };
 
 let projectColors = {
