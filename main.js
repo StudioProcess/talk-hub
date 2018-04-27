@@ -10,7 +10,7 @@ let transitionTime = {
 };
 
 let colorizeOpacity = 0.85;
-let followerCount = 1622;
+let followerCount = 1632;
 
 let project = {
   exoplanets: [113, 112, 111, 110, 109, 108, 107, ],
