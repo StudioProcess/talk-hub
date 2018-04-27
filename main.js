@@ -1,3 +1,5 @@
+let short = 1; // do short version? use order_short var to select projects
+
 let transitionTime = {
   showHide: 600,
   overlay: 1000,
@@ -45,6 +47,7 @@ let categoryColors = {
 
 // Newest to oldest
 let order = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
+let order_short = [ 'airplane_geometry', 'flash_flooding', 'patterns' ];
 
 let keynoteSlides = {
   exoplanets: 5,
@@ -137,9 +140,25 @@ async function init() {
   setLinks();
   
   setFollowerCount();
+  
+  setupProjects();
 }
 
 $( () => init() ); // run initalization on page load
+
+
+function setupProjects() {
+  if (short) { order = order_short; }
+  
+  for ( let projName of  Object.keys(project).filter(n => n != 'other') ) {
+    if (!order.includes(projName)) {
+      project['other'] = project['other'].concat( project[projName] );
+      delete project[projName];
+    }
+  }
+  
+  console.log(order, project);
+}
 
 
 // Keyboard handler
@@ -661,8 +680,16 @@ let state = 0;
 let pstate = 0; // eslint-disable-line no-unused-vars
 
 let caseStates = 8;
-let numStates = caseStates + order.length;
 function setState(num) {
+  let numStates = caseStates + order.length;
+  if (num >= numStates) {
+    num %= numStates;
+  } else if (num < 0) {
+    num = num % numStates + numStates;
+  }
+  pstate = state;
+  state = num;
+  
   let proj;
   switch (num) {
   
@@ -706,28 +733,21 @@ function setState(num) {
     
   default:
     // check for project focus
-    proj = num - caseStates;
+    proj = num - caseStates; // 
+    console.log("proj ", proj);
     if (proj >= 0 && proj < order.length) {
       let withIntro = proj > 0;
       focusProject(proj, withIntro).then(logState);
     } else {
-      console.warn('unknown state');
+      console.warn('unknown state: ' + num);
     }
     break;
   }
-  
   console.log(" going to state " + state + "/" + (numStates-1));
 }
 
 function nextState(delta = 1) {
-  pstate = state;
-  state += delta;
-  if (state >= numStates) {
-    state %= numStates;
-  } else if (state < 0) {
-    state = state % numStates + numStates;
-  }
-  setState(state);
+  setState(state+delta);
 }
 
 function prevState() {
