@@ -4,7 +4,8 @@
   "description": "",
   "repository": "github:StudioProcess/talk-hub",
   "scripts": {
-    "start": "sudo browser-sync start --server --port 80 --no-notify --browser 'google chrome' --files *.html *.js",
+    "start": "sudo live-server --port=80 --browser='google chrome'",
+    "old": "sudo live-server old --mount='/node_modules:node_modules' --port=80 --browser='google chrome'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "scrape": "node --experimental-modules scrape"
   },
@@ -16,8 +17,8 @@
     "seedrandom": "^2.4.4"
   },
   "devDependencies": {
-    "browser-sync": "^2.24.7",
     "cheerio": "^1.0.0-rc.2",
+    "live-server": "^1.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   }

@@ -1,4 +1,4 @@
-let short = 0; // do short version? use order_short var to select projects
+let short = 1; // do short version? use order_short var to select projects
 
 let transitionTime = {
   showHide: 600,
@@ -13,15 +13,15 @@ let colorizeOpacity = 0.85;
 let followerCount = 1632;
 
 let project = {
-  exoplanets: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, ],
-  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, ],
+  exoplanets: [113, 112, 111, 110, 109, 108, 107, ],
+  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, ],
   pillars: [91, 86, 73, 71, 70, 69, 48, 45, 40, 38, ],
-  space_colonization: [77, 60, 57, 56, 55, 51, 126, 127, ],
-  flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, 121, 134, ],
+  space_colonization: [77, 60, 57, 56, 55, 51, ],
+  flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, ],
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
   
-  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139], // not used in presentation
+  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84], // not used in presentation
 };
 let noproject; // posts without a project
 
@@ -32,10 +32,9 @@ let noproject; // posts without a project
 // };
 
 let categories = {
-  commercial: [], // add all from project in init()
-  // actually used by the customer
-  comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 130, 139 ],
-  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 146],
+  commercial: [37, 46, 58, 59, 66], // add all from project in init() // 76, 87, 88, 99, 100, 104, 105
+  comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108],
+  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116 ],
   other: []
 };
 
@@ -81,10 +80,6 @@ let d; // post data (hash indexed by post num);
 
 
 async function init() {
-  // load post html
-  let post_html = await fetch('posts.html').then(res => res.text());
-  $('#insert_posts').append(post_html);
-  
   // Add styles
   $('body').prepend(`
     <style>
@@ -92,7 +87,7 @@ async function init() {
         position:absolute; bottom:0; right:0; background:black; color:white; padding:16px; font-size:32px; display:none;
         transform-origin: bottom right;
       }
-      .u7YqG { transform-origin: top right; } /* overlay symbols */
+      ._lxd52 { transform-origin: top right; } /* overlay symbols */
       .overlay { 
         position:absolute; top:0; left:0; width:100%; height:100%; background-color:#000; opacity:0.3; display:none;
         pointer-events:none;
@@ -108,7 +103,7 @@ async function init() {
   `);
   
   // post elements
-  p = $('.v1Nh3').addClass('post').unwrap();
+  p = $('._mck9w').addClass('post').unwrap();
   n = p.length;
   console.log(n + ' posts'); // output number of posts
   
@@ -287,8 +282,7 @@ function resizeAll(size=1, time=transitionTime.resize) {
     width: w/row_width*100 + '%',
     marginBottom: m/row_width*100 + '%'
   }, time);
-  // .u7YqG .. Video button
-  $('.post-num, .u7YqG').css({'transform': `scale(${size})`});
+  $('.post-num, ._lxd52').css({'transform': `scale(${size})`});
   
   // $('.post').css({
   //   width: w/row_width*100 + '%',
@@ -323,19 +317,19 @@ function prevSize() { nextSize(-1); }
 let chromeVisible = true;
 function hideChrome(time=transitionTime.chrome) {
   // header, overlay buttons (video, multiple pics), footer, account info
-  $('nav, header, footer, ._4bSq7, .fx7hk').stop()
+  $('nav._68u16, ._lxd52, footer, header._mainc').stop()
     .css('pointerEvents', 'none')
     .animate( {opacity:0}, time/3*2, () => {
-      $('body').stop().animate({'marginTop': -535}, time/1.5);
+      $('body').stop().animate({'marginTop': -290}, time/3);
     });
   chromeVisible = false;
 }
 
 function showChrome(time=transitionTime.chrome) {
   // console.log(time);
-  $('body').stop().animate( {'marginTop': 0}, time/1.5, () => {
+  $('body').stop().animate( {'marginTop': 0}, time/3, () => {
     // header, overlay buttons (video, multiple pics), footer, account info
-    $('nav, header, footer, ._4bSq7, .fx7hk').stop()
+    $('nav._68u16, ._lxd52, footer, header._mainc').stop()
       .animate({opacity:1}, time/3*2)
       .css('pointerEvents', 'auto');
   });
