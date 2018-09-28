@@ -50,13 +50,13 @@ let order = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization'
 let order_short = [ 'airplane_geometry', 'flash_flooding', 'patterns' ];
 
 let keynoteSlides = {
-  exoplanets: 5,
-  airplane_geometry: 20,
-  pillars: 38,
-  space_colonization: 59,
-  flash_flooding: 69,
-  universe: 86,
-  patterns: 100,
+  exoplanets: 4,
+  airplane_geometry: 19,
+  pillars: 37,
+  space_colonization: 58,
+  flash_flooding: 68,
+  universe: 85,
+  patterns: 99,
 };
 
 let projectColors = {
