@@ -10,7 +10,7 @@ let transitionTime = {
 };
 
 let colorizeOpacity = 0.85;
-let followerCount = 1632;
+let followerCount = 3947;
 
 let project = {
   exoplanets: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, ],
@@ -145,6 +145,7 @@ async function init() {
   setLinks();
   
   setFollowerCount();
+  setPostCount();
   
   setupProjects();
 }
@@ -544,7 +545,17 @@ function setFollowerCount() {
   $('.follower-count').attr('title', num).text(num);
   
   let $meta = $('meta[name=description]');
-  let desc = $meta.attr('content').replace('1,596', num);
+  let desc = $meta.attr('content').replace('3,944', num);
+  $meta.attr('content', desc);
+  $('meta[property="og:description"]').attr('content', desc);
+}
+
+function setPostCount() {
+  let num = n;
+  $('.post-count').attr('title', num).text(num);
+  
+  let $meta = $('meta[name=description]');
+  let desc = $meta.attr('content').replace('146', num);
   $meta.attr('content', desc);
   $('meta[property="og:description"]').attr('content', desc);
 }
