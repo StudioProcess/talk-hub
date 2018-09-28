@@ -104,6 +104,18 @@ async function init() {
       .post { margin:0; margin-bottom:2.994652406%; flex-shrink:0; flex-grow:0; width:31.3368984%; }
       .post.filler { order:9999; }
       body, html { background-color:#fafafa; }
+      .kM-aa canvas[style] {
+        top: -4px !important;
+        left: -4px !important;
+        width: 83px !important;
+        height: 83px !important;
+        border: 1px solid #e6e6e6;
+        border-radius: 50%;
+      }
+      .RR-M-.h5uC0 canvas {
+        background-image: url('./index_files/ring.png');
+        background-size: 100%;
+      }
     </style>
   `);
   
