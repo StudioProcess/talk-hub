@@ -121,6 +121,9 @@ async function init() {
   
   // post elements
   p = $('.v1Nh3').addClass('post').unwrap();
+  
+  $('.post img').attr('srcset', ''); // remove srcset attribute (external image links)
+  
   n = p.length;
   console.log(n + ' posts'); // output number of posts
   
