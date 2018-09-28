@@ -21,7 +21,7 @@ let project = {
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
   
-  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139], // not used in presentation
+  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139, 147 ], // not used in presentation
 };
 let noproject; // posts without a project
 
@@ -33,8 +33,7 @@ let noproject; // posts without a project
 
 let categories = {
   commercial: [], // add all from project in init()
-  // actually used by the customer
-  comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 130, 139 ],
+  comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 130, 139, 147 ], // actually used by the customer
   event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 146],
   other: []
 };
@@ -536,6 +535,7 @@ function setLinks() {
   $('.post a').css('pointerEvents', 'none'); // deactivate all links
   // set group links
   Object.keys(project).forEach(projectName => {
+    if (projectName == 'other') return;
     let href = 'appswitch://keynote?slide=' + keynoteSlides[projectName];
     project[projectName].forEach(num => {
       let a = getPost(num).find('a');
