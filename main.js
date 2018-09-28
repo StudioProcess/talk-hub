@@ -183,7 +183,8 @@ $(document).on('keydown', (e) => {
   else if (e.key == 'f' || e.key == 'F') { // F .. fullscreen
     if (!document.webkitFullscreenElement) {
       document.querySelector('html').webkitRequestFullscreen();
-    } else { document.webkitExitFullscreen(); }
+    } 
+    // else { document.webkitExitFullscreen(); }
   }
   
   else if (e.key == 'c' || e.key == 'C') { toggleColorize(); }
