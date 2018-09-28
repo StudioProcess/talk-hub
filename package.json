@@ -1,6 +1,6 @@
 {
   "name": "talk-hub",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "repository": "github:StudioProcess/talk-hub",
   "scripts": {
@@ -13,12 +13,12 @@
   "dependencies": {
     "jquery": "^3.3.1",
     "jquery-color": "^1.0.0",
-    "seedrandom": "^2.4.3"
+    "seedrandom": "^2.4.4"
   },
   "devDependencies": {
-    "browser-sync": "^2.23.6",
+    "browser-sync": "^2.24.7",
     "cheerio": "^1.0.0-rc.2",
-    "request": "^2.85.0",
+    "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   }
 }
