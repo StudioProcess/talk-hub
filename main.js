@@ -4,7 +4,7 @@ let transitionTime = {
   showHide: 600,
   overlay: 1000,
   dim: 1000,
-  resize: 1200,
+  resize: 2000,
   chrome: 1200,
   scramble: 1000,
 };
@@ -591,12 +591,13 @@ function colorizeByMonth(nums = allNums()) {
     // year 2 starts april 2017
     let month = date.getMonth()-3 + (date.getFullYear()-2017)*12; // so year2 has month >= 0
     // if (date.getFullYear() > 2017 || (date.getFullYear() == 2017 && date.getMonth() >= 3)) {
+    console.log(month);
     let q;
     if (month >= 0) {
       // year 2
       // console.log(month);
       // overlay([num], hsl(hues.year2), colorizeOpacity);
-      q = overlay([num], shade(month, 13, hues.year2), colorizeOpacity);
+      q = overlay([num], shade(month, 17, hues.year2), colorizeOpacity);
     } else {
       // year 1
       // console.log(month);
@@ -749,6 +750,8 @@ function setState(num) {
   case 5:
     colorizeCommUsed().then(logState);
     break;
+    
+  // add colorize
   
   case 6: // unsorted
     Promise.all([
