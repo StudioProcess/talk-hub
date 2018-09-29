@@ -33,7 +33,7 @@ let noproject; // posts without a project
 
 let categories = {
   commercial: [], // add all from project in init()
-  comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 130, 139, 147 ], // actually used by the customer
+  comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 128, 130, 139, 147 ], // actually used by the customer
   event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 146],
   other: []
 };
@@ -241,6 +241,10 @@ function numsFrom(num) {
   return out;
 }
 function dedupe(nums) { return Array.from(new Set(nums)); }
+function subtract(fromArray, these) {
+  return fromArray.filter(x => !these.includes(x));
+}
+
 function getPost(i) { return $(`[data-num=${i}]`); }
 
 // find group name for post number
@@ -591,7 +595,6 @@ function colorizeByMonth(nums = allNums()) {
     // year 2 starts april 2017
     let month = date.getMonth()-3 + (date.getFullYear()-2017)*12; // so year2 has month >= 0
     // if (date.getFullYear() > 2017 || (date.getFullYear() == 2017 && date.getMonth() >= 3)) {
-    console.log(month);
     let q;
     if (month >= 0) {
       // year 2
@@ -647,6 +650,13 @@ function colorizeCommercial() {
   });
 }
 
+function showCommBSides() {
+  let commbsides =   subtract( categories['commercial'], categories['comm_used'] );
+  let p = uncolorizeAll();
+  let r = dim(invertNums(commbsides));
+  return Promise.all([p, r]);
+}
+
 function colorizeCommUsed() {
   let p = uncolorizeAll();
   // rmOverlay(categories['commercial']);
@@ -695,6 +705,7 @@ function setGlobals() {
   window.colorizeCategories = colorizeCategories;
   window.colorizeCommercial = colorizeCommercial;
   window.colorizeCommUsed = colorizeCommUsed;
+  window.showCommBSides = showCommBSides;
   
   window.focusProject = focusProject;
   
@@ -713,7 +724,7 @@ function logState() {
 let state = 0;
 let pstate = 0; // eslint-disable-line no-unused-vars
 
-let caseStates = 8;
+let caseStates = 9;
 function setState(num) {
   let numStates = caseStates + order.length;
   if (num >= numStates) {
@@ -751,16 +762,18 @@ function setState(num) {
     colorizeCommUsed().then(logState);
     break;
     
-  // add colorize
+  case 6:
+    showCommBSides().then(logState);
+    break;
   
-  case 6: // unsorted
+  case 7: // unsorted
     Promise.all([
       colorizeProjects(),
       sorted ? unsort() : Promise.resolve()
     ]).then(logState);
     break;
     
-  case 7: // sorted
+  case 8: // sorted
     Promise.all([
       colorizeProjects(),
       !sorted ? sort() : Promise.resolve()
