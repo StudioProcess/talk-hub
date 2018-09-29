@@ -4,7 +4,7 @@ let transitionTime = {
   showHide: 600,
   overlay: 1000,
   dim: 1000,
-  resize: 2000,
+  resize: 2500,
   chrome: 1200,
   scramble: 1000,
 };
