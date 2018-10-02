@@ -1,4 +1,5 @@
 let short = 0; // do short version? use order_short var to select projects
+let followerCount = 3970;
 
 let transitionTime = {
   showHide: 600,
@@ -10,7 +11,6 @@ let transitionTime = {
 };
 
 let colorizeOpacity = 0.85;
-let followerCount = 3947;
 
 let project = {
   exoplanets: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, ],
