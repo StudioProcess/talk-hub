@@ -37,6 +37,9 @@ const DEBUG = 0;
   
   $links.each((i, el) => {
     let href = $(el).attr('href');
+    if (href.startsWith('/p/')) { // make URL absolute (for when HTML was saved from chrome inspector)
+      href = 'https://www.instagram.com' + href;
+    }
     links.push(href);
   });
   console.log(links);

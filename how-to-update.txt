@@ -1,0 +1,16 @@
+Nov 8, 2018
+
+# Update process
+
+* copy new posts to posts.html
+	* just use chrome inspector
+	* make sure single posts (div.v1Nh3.kIKUG) are wrapped in (div.Nnq7C.weEfm)
+
+* copy new images
+	* chrome: save page as 'index.html'
+	* copy images from index_files to project index_files
+	* links in posts.html are automatically changed to local
+
+* update posts.json (needed for post dates) by running `npm run scrape` (needs an up to date posts.html)
+
+* update `project` and `categories` in main.js
