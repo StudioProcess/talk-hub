@@ -1,5 +1,5 @@
 let short = 1; // do short version? use order_short var to select projects
-let followerCount = 4042;
+let followerCount = 4043;
 
 let transitionTime = {
   showHide: 600,
@@ -13,7 +13,7 @@ let transitionTime = {
 let colorizeOpacity = 0.85;
 
 let project = {
-  exoplanets: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153],
+  interference: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153],
   airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, ],
   pillars: [91, 86, 73, 71, 70, 69, 48, 45, 40, 38, ],
   space_colonization: [77, 60, 57, 56, 55, 51, 126, 127, ],
@@ -47,22 +47,22 @@ let categoryColors = {
 };
 
 // Newest to oldest
-let order = [ 'exoplanets', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
+let order = [ 'interference', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
 // let order_short = [ 'airplane_geometry', 'flash_flooding', 'patterns' ]; // Forward Festival
-let order_short = [ 'exoplanets', 'flash_flooding', 'universe' ]; // On Data and Design
+let order_short = [ 'universe', 'flash_flooding', 'interference',   ]; // On Data and Design
 
 let keynoteSlides = {
-  exoplanets: 4,
-  airplane_geometry: 19,
-  pillars: 37,
-  space_colonization: 58,
-  flash_flooding: 68,
-  universe: 85,
-  patterns: 99,
+  interference: 35,
+  airplane_geometry: 54,
+  pillars: 72,
+  space_colonization: 93,
+  flash_flooding: 18,
+  universe: 4,
+  patterns: 103,
 };
 
 let projectColors = {
-  exoplanets: '#2551a7',
+  interference: '#2551a7',
   airplane_geometry: '#1a1f39',
   pillars: '#9ce0eb',
   space_colonization: '#689e86',
