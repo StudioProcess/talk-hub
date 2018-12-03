@@ -47,7 +47,7 @@ let categoryColors = {
 };
 
 // Newest to oldest
-let order = [ 'interference', 'flash_flooding', 'airplane_geometry', 'pillars', 'space_colonization', 'universe', 'patterns' ];
+let order = [ 'flash_flooding', 'interference', 'airplane_geometry', 'pillars', 'space_colonization', 'universe', 'patterns' ];
 // let order_short = [ 'airplane_geometry', 'flash_flooding', 'patterns' ]; // Forward Festival
 let order_short = [ 'universe', 'flash_flooding', 'interference',   ]; // On Data and Design
 
