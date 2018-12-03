@@ -1,5 +1,5 @@
-let short = 1; // do short version? use order_short var to select projects
-let followerCount = 4043;
+let short = 0; // do short version? use order_short var to select projects
+let followerCount = 4092;
 
 let transitionTime = {
   showHide: 600,
@@ -13,16 +13,16 @@ let transitionTime = {
 let colorizeOpacity = 0.85;
 
 let project = {
-  interference: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153],
-  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, ],
+  interference: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153, 160, 162, 163, 164 ],
+  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, 155, 157, 161 ],
   pillars: [91, 86, 73, 71, 70, 69, 48, 45, 40, 38, ],
-  space_colonization: [77, 60, 57, 56, 55, 51, 126, 127, ],
+  space_colonization: [77, 60, 57, 56, 55, 51, 126, 127, 159 ],
   flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, 121, 134, ],
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
   
   // not used in presentation – but shows up as "part of some project, rather than event/promo"
-  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139, 147, 150, 151 ],
+  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139, 147, 150, 151, 156, ],
 };
 let noproject; // posts without a project
 
@@ -35,7 +35,7 @@ let noproject; // posts without a project
 let categories = {
   commercial: [], // add all from project in init()
   comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 128, 130, 139, 147, 150, 151 ], // actually used by the customer
-  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 146, 148, 154],
+  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 146, 148, 154, 158, ],
   other: []
 };
 
@@ -52,14 +52,24 @@ let order = [ 'interference', 'airplane_geometry', 'pillars', 'space_colonizatio
 let order_short = [ 'universe', 'flash_flooding', 'interference',   ]; // On Data and Design
 
 let keynoteSlides = {
-  interference: 35,
-  airplane_geometry: 54,
-  pillars: 72,
-  space_colonization: 93,
-  flash_flooding: 18,
-  universe: 4,
-  patterns: 103,
+  interference: 5,
+  airplane_geometry: 1,
+  pillars: 1,
+  space_colonization: 1,
+  flash_flooding: 1,
+  universe: 1,
+  patterns: 1,
 };
+
+// let keynoteSlides = {
+//   interference: 35,
+//   airplane_geometry: 54,
+//   pillars: 72,
+//   space_colonization: 93,
+//   flash_flooding: 18,
+//   universe: 4,
+//   patterns: 103,
+// };
 
 let projectColors = {
   interference: '#2551a7',
