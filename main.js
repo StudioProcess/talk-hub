@@ -47,16 +47,16 @@ let categoryColors = {
 };
 
 // Newest to oldest
-let order = [ 'interference', 'airplane_geometry', 'pillars', 'space_colonization', 'flash_flooding', 'universe', 'patterns' ];
+let order = [ 'interference', 'flash_flooding', 'airplane_geometry', 'pillars', 'space_colonization', 'universe', 'patterns' ];
 // let order_short = [ 'airplane_geometry', 'flash_flooding', 'patterns' ]; // Forward Festival
 let order_short = [ 'universe', 'flash_flooding', 'interference',   ]; // On Data and Design
 
 let keynoteSlides = {
   interference: 5,
+  flash_flooding: 26,
   airplane_geometry: 1,
   pillars: 1,
   space_colonization: 1,
-  flash_flooding: 1,
   universe: 1,
   patterns: 1,
 };
