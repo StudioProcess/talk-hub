@@ -1,5 +1,5 @@
 let short = 0; // do short version? use order_short var to select projects
-let followerCount = 4092;
+let followerCount = 4264;
 
 let transitionTime = {
   showHide: 600,
@@ -47,18 +47,19 @@ let categoryColors = {
 };
 
 // Newest to oldest
-let order = [ 'flash_flooding', 'interference', 'airplane_geometry', 'pillars', 'space_colonization', 'universe', 'patterns' ];
+let order = [ 'universe', 'airplane_geometry', 'pillars',  'space_colonization', 'flash_flooding', 'interference', 'patterns' ];
+// let order = [ 'flash_flooding', 'interference', 'airplane_geometry', 'pillars', 'space_colonization', 'universe', 'patterns' ]; // Creative Prism
 // let order_short = [ 'airplane_geometry', 'flash_flooding', 'patterns' ]; // Forward Festival
 let order_short = [ 'universe', 'flash_flooding', 'interference',   ]; // On Data and Design
 
 let keynoteSlides = {
-  interference: 5,
-  flash_flooding: 26,
-  airplane_geometry: 1,
-  pillars: 1,
-  space_colonization: 1,
-  universe: 1,
-  patterns: 1,
+  universe: 5,
+  airplane_geometry: 19,
+  pillars: 37,
+  space_colonization: 58,
+  flash_flooding:68,
+  interference: 85,
+  patterns: 103,
 };
 
 // let keynoteSlides = {
