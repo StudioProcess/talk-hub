@@ -602,6 +602,7 @@ function setPostCount() {
 }
 
 function hsl(hue, sat=100, lig=50) { return `hsl(${hue}, ${sat}%, ${lig}%)`;}
+
 function shade(shade, shades=10, hue=0, sat=100, narrow=20 ) {
   let lig = narrow + (shade/(shades-1))*(100-narrow*2);
   return hsl(hue, sat, lig);
@@ -611,24 +612,29 @@ function colorizeByMonth(nums = allNums()) {
   nums = dedupe(nums);
   let promises = [];
   let p = undim(nums); promises.push(p);
-  nums.forEach(num => {
+  
+  // so year2+ has month >= 0, year1 has month < 0
+  function computeMonth(num) {
     let date = new Date(d[num].taken_at_timestamp * 1000);
     // console.log(num, date);
     // year 2 starts april 2017
-    let month = date.getMonth()-3 + (date.getFullYear()-2017)*12; // so year2 has month >= 0
-    // if (date.getFullYear() > 2017 || (date.getFullYear() == 2017 && date.getMonth() >= 3)) {
+    return date.getMonth()-3 + (date.getFullYear()-2017)*12;
+  }
+  
+  let months = nums.map(computeMonth), monthMin = Math.min(...months), monthMax = Math.max(...months);
+  // console.log(monthMin, monthMax);
+  
+  nums.forEach(num => {
+    let month = computeMonth(num);
     let q;
     if (month >= 0) {
       // year 2
-      // console.log(month);
-      // overlay([num], hsl(hues.year2), colorizeOpacity);
-      q = overlay([num], shade(month, 17, hues.year2), colorizeOpacity);
+      // console.log('year2', month);
+      q = overlay([num], shade(month, monthMax+1, hues.year2), colorizeOpacity);
     } else {
       // year 1
-      // console.log(month);
-      // -month-1
-      // overlay([num], hsl(hues.year1), colorizeOpacity);
-      q = overlay([num], shade(month+18, 18, hues.year1), colorizeOpacity);
+      // console.log('year 1', month);
+      q = overlay([num], shade(month-monthMin, -monthMin, hues.year1), colorizeOpacity);
     }
     promises.push(q);
   });
