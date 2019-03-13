@@ -35,7 +35,7 @@ let noproject; // posts without a project
 let categories = {
   commercial: [], // add all from project in init()
   comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 128, 130, 139, 147, 150, 151, 166, 167, 168, 173, 175, 177], // actually used by the customer
-  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 146, 148, 154, 158, 165, 169, 171, 174, 178, 180 ],
+  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 146, 148, 154, 158, 165, 169, 170, 171, 174, 178, 180 ],
   other: []
 };
 
@@ -65,26 +65,16 @@ let keynoteSlides = {
   patterns: 104,
 };
 
-// let keynoteSlides = {
-//   interference: 35,
-//   airplane_geometry: 54,
-//   pillars: 72,
-//   space_colonization: 93,
-//   flash_flooding: 18,
-//   universe: 4,
-//   patterns: 103,
-// };
-
 let projectColors = {
   interference: '#2551a7',
   airplane_geometry: '#1a1f39',
-  pillars: '#9ce0eb',
-  space_colonization: '#689e86',
-  flash_flooding: '#8b689e',
-  universe: '#fd717a',
-  patterns: '#f2d390',
+  pillars: '#fdff4d',
+  space_colonization: '#ada77e',
+  flash_flooding: '#beeaff',
+  universe: '#e73145',
+  patterns: '#afe76e',
   other: '#e8e8e8'
-};
+      };
 
 let hues = {
   year1: 200,
@@ -227,7 +217,7 @@ $(document).on('keydown', (e) => {
   else if (e.key == 'c' || e.key == 'C') { toggleColorize(); }
   
   else if (e.key == '0' || e.key == '3') { resizeAll(1); }
-  else if (e.key == '1') { resizeAll(0.24); }
+  else if (e.key == '1') { resizeAll(0.23); }
   else if (e.key == '2') { resizeAll(0.48); }
   
   else if (e.key == 's' || e.key == 'S') { toggleSort(); }
