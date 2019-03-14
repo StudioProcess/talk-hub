@@ -67,7 +67,7 @@ let keynoteSlides = {
 
 let projectColors = {
   interference: '#2551a7',
-  airplane_geometry: '#1a1f39',
+  airplane_geometry: '#e058ae',
   pillars: '#fdff4d',
   space_colonization: '#ada77e',
   flash_flooding: '#beeaff',
