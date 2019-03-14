@@ -57,12 +57,12 @@ let order_short = [ 'universe', 'flash_flooding', 'pillars', 'interference' ]; /
 let keynoteSlides = {
   universe: 5,
   flash_flooding: 19,
-  pillars: 36,
-  interference: 57,
+  pillars: 37,
+  interference: 58,
   
-  airplane_geometry: 76,
-  space_colonization: 94,
-  patterns: 104,
+  airplane_geometry: 77,
+  space_colonization: 95,
+  patterns: 105,
 };
 
 let projectColors = {
