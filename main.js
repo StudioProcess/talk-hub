@@ -20,7 +20,7 @@ let project = {
   flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, 121, 134, ],
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
-  
+
   // not used in presentation – but shows up as "part of some project, rather than event/promo"
   other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139, 147, 150, 151, 156, 166, 167, 168, 172, 173, 175, 176, 177 ],
 };
@@ -56,13 +56,13 @@ let order_short = [ 'universe', 'flash_flooding', 'pillars', 'interference' ]; /
 
 let keynoteSlides = {
   universe: 5,
-  flash_flooding: 19,
-  pillars: 37,
-  interference: 58,
-  
-  airplane_geometry: 77,
-  space_colonization: 95,
-  patterns: 105,
+  flash_flooding: 20,
+  pillars: 38,
+  interference: 60,
+
+  airplane_geometry: 79,
+  space_colonization: 97,
+  patterns: 107,
 };
 
 let projectColors = {
@@ -89,7 +89,7 @@ async function init() {
   // load post html
   let post_html = await fetch('posts.html').then(res => res.text());
   $('#insert_posts').append(post_html);
-  
+
   // Add styles
   $('body').prepend(`
     <style>
@@ -98,7 +98,7 @@ async function init() {
         transform-origin: bottom right;
       }
       .u7YqG { transform-origin: top right; } /* overlay symbols */
-      .overlay { 
+      .overlay {
         position:absolute; top:0; left:0; width:100%; height:100%; background-color:#000; opacity:0.3; display:none;
         pointer-events:none;
       }
@@ -123,10 +123,10 @@ async function init() {
       }
     </style>
   `);
-  
+
   // post elements
   p = $('.v1Nh3').addClass('post').unwrap();
-  
+
   $('.post img').attr('srcset', ''); // remove srcset attribute (external image links)
   // change image links to local
   $('.post img').each((idx, el) => {
@@ -134,45 +134,45 @@ async function init() {
     let filename = src.replace(/^.*[/]/, '');
     $(el).attr('src', './index_files/' + filename);
   });
-  
+
   n = p.length;
   console.log(n + ' posts'); // output number of posts
-  
+
   // Add post number data attribute (oldest = 1)
   p.attr('data-num', (i) => {
     return n - i;
   });
   p.css('position', 'relative');
-  
+
   // overlay div
   p.append('<div class="overlay"></div>');
-  
+
   // post number div
   p.append((i) => {
     return '<div class="post-num">' + (n-i) + '</div>';
   });
-  
+
   // fill categories
   Object.keys(project).forEach(projectName => {
     categories.commercial = categories.commercial.concat(project[projectName]);
   });
-  
+
   // load post data
   d = await fetch('posts.json').then(res => res.json());
-  
+
   setGlobals();
-  
+
   noproject = Array.from( Object.values(project).reduce((acc, grp) => {
     // console.log(grp);
     grp.forEach( n => acc.delete(n) );
     return acc;
   }, new Set(allNums())) );
-  
+
   setLinks();
-  
+
   setFollowerCount();
   setPostCount();
-  
+
   setupProjects();
 }
 
@@ -181,14 +181,14 @@ $( () => init() ); // run initalization on page load
 
 function setupProjects() {
   if (short) { order = order_short; }
-  
+
   for ( let projName of  Object.keys(project).filter(n => n != 'other') ) {
     if (!order.includes(projName)) {
       project['other'] = project['other'].concat( project[projName] );
       delete project[projName];
     }
   }
-  
+
   console.log(order, project);
 }
 
@@ -200,36 +200,36 @@ $(document).on('keydown', (e) => {
     if (!shown) $('.post-num').fadeIn(100);
     else $('.post-num').fadeOut(100);
     e.preventDefault();
-  } 
-  
+  }
+
   else if (e.keyCode == 9 || e.keyCode == 13) { // TAB, ENTER .. toggle chrome
     toggleChrome();
     e.preventDefault();
   }
-  
+
   else if (e.key == 'f' || e.key == 'F') { // F .. fullscreen
     if (!document.webkitFullscreenElement) {
       document.querySelector('html').webkitRequestFullscreen();
-    } 
+    }
     // else { document.webkitExitFullscreen(); }
   }
-  
+
   else if (e.key == 'c' || e.key == 'C') { toggleColorize(); }
-  
+
   else if (e.key == '0' || e.key == '3') { resizeAll(1); }
   else if (e.key == '1') { resizeAll(0.23); }
   else if (e.key == '2') { resizeAll(0.48); }
-  
+
   else if (e.key == 's' || e.key == 'S') { toggleSort(); }
-  
+
   // else if (e.keyCode == 39) { focusNext(); } // right arrow
   // else if (e.keyCode == 37) { focusPrev(); } // left arrow
   else if (e.keyCode == 39) { nextState(); } // right arrow
   else if (e.keyCode == 37) { prevState(); } // left arrow
-  
+
   else if (e.keyCode == 40) { nextSize(); e.preventDefault(); } // down arrow
   else if (e.keyCode == 38) { prevSize(); e.preventDefault(); } // up arrow
-  
+
   else if (e.key == 'm' || e.key == 'M') { colorizeByMonth(); }
   else if (e.key == 'l' || e.key == 'L') { colorizeLastYear(); }
   else if (e.key == 'r' || e.key == 'R') { testState(); }
@@ -275,7 +275,7 @@ function dim(arr, time=transitionTime.dim) {
   dedupe(arr).forEach(i => getPost(i).css('transitionDuration', time+'ms').addClass('dim'));
   return resolveAfter(time);
 }
-function undim(arr, time=transitionTime.dim) { 
+function undim(arr, time=transitionTime.dim) {
   dedupe(arr).forEach(i => getPost(i).css('transitionDuration', time+'ms').removeClass('dim'));
   return resolveAfter(time);
 }
@@ -321,7 +321,7 @@ function resizeAll(size=1, time=transitionTime.resize) {
   }, time);
   // .u7YqG .. Video button
   $('.post-num, .u7YqG').css({'transform': `scale(${size})`});
-  
+
   // $('.post').css({
   //   width: w/row_width*100 + '%',
   //   marginBottom: m/row_width*100 + '%'
@@ -430,7 +430,7 @@ function colorizeProject(projNum, withColor = false) {
   let p = [];
   p.push( undim(nums) );
   if (withColor) {
-    p.push( colorize(nums) ); 
+    p.push( colorize(nums) );
   } else {
     p.push( uncolorize(nums) );
   }
@@ -449,7 +449,7 @@ function focusProject(projNum, withIntro = true) {
   } else if (focusedProject < 0) {
     focusedProject = focusedProject % numProjects + numProjects;
   }
-  
+
   // intro
   let intro = Promise.resolve();
   if (withIntro) {
@@ -481,9 +481,9 @@ function focusPrev() { // eslint-disable-line no-unused-vars
 //     if (focusedGroup < 0) focusedGroup = focusedGroup % order.length + order.length;
 //     focusedState = focusedState % 4 + 4;
 //   }
-// 
+//
 //   console.log(focusedGroup, focusedState);
-// 
+//
 //   if (focusedState == 0) {
 //     focusProject(focusedGroup, true);
 //   } else if (focusedState == 1) {
@@ -530,7 +530,7 @@ function scramble(time=transitionTime.scramble) {
   let int = 1000/fps;
   let total = Math.floor(time/int);
   let i = 0;
-  
+
   return new Promise(resolve => {
     let x = setInterval(() => {
       $('.post').each((i, el) => {
@@ -574,7 +574,7 @@ function unsetLinks() {
 function setFollowerCount() {
   let num = followerCount.toLocaleString('en');
   $('.follower-count').attr('title', num).text(num);
-  
+
   let $meta = $('meta[name=description]');
   let desc = $meta.attr('content').replace('3,944', num);
   $meta.attr('content', desc);
@@ -584,7 +584,7 @@ function setFollowerCount() {
 function setPostCount() {
   let num = n;
   $('.post-count').attr('title', num).text(num);
-  
+
   let $meta = $('meta[name=description]');
   let desc = $meta.attr('content').replace('146', num);
   $meta.attr('content', desc);
@@ -602,7 +602,7 @@ function colorizeByMonth(nums = allNums()) {
   nums = dedupe(nums);
   let promises = [];
   let p = undim(nums); promises.push(p);
-  
+
   // so year2+ has month >= 0, year1 has month < 0
   function computeMonth(num) {
     let date = new Date(d[num].taken_at_timestamp * 1000);
@@ -610,10 +610,10 @@ function colorizeByMonth(nums = allNums()) {
     // year 2 starts april 2017
     return date.getMonth()-3 + (date.getFullYear()-2017)*12;
   }
-  
+
   let months = nums.map(computeMonth), monthMin = Math.min(...months), monthMax = Math.max(...months);
   // console.log(monthMin, monthMax);
-  
+
   nums.forEach(num => {
     let month = computeMonth(num);
     let q;
@@ -638,7 +638,7 @@ function colorizeLastYear() {
   let last = numsFrom(37);
   let p = colorizeByMonth(last);
   let q = dim(invertNums(last));
-  
+
   return Promise.all([p, q]).then(() => {
     return rmOverlay(last);
   });
@@ -662,7 +662,7 @@ function colorizeCommercial() {
   let nums = categories['commercial'];
   let q = overlay(nums, categoryColors['commercial'], colorizeOpacity);
   let r = dim(invertNums(nums));
-  
+
   return Promise.all([p, q, r]).then(() => {
     return rmOverlay(nums);
   });
@@ -700,7 +700,7 @@ function setGlobals() {
   window.invertNums = invertNums;
   window.allNums = allNums;
   window.getPost = getPost;
-  
+
   window.show = show;
   window.showAll = showAll;
   window.hide = hide;
@@ -711,25 +711,25 @@ function setGlobals() {
   window.overlay = overlay;
   window.rmOverlay = rmOverlay;
   window.rmOverlayAll = rmOverlayAll;
-  
+
   window.resizeAll = resizeAll;
-  
+
   window.hideChrome = hideChrome;
   window.showChrome = showChrome;
   window.toggleChrome = toggleChrome;
-  
+
   window.colorize = colorize;
   window.uncolorize = uncolorize;
   window.colorizeCategories = colorizeCategories;
   window.colorizeCommercial = colorizeCommercial;
   window.colorizeCommUsed = colorizeCommUsed;
   window.showCommBSides = showCommBSides;
-  
+
   window.focusProject = focusProject;
-  
+
   window.sort = sort;
   window.unsort = unsort;
-  
+
   window.setLinks = setLinks;
   window.unsetLinks = unsetLinks;
 }
@@ -752,55 +752,55 @@ function setState(num) {
   }
   pstate = state;
   state = num;
-  
+
   let proj;
   switch (num) {
-  
+
   case 0:
     uncolorizeAll().then(logState);
     break;
-  
+
   case 1:
     colorizeByMonth().then(logState);
     break;
-  
+
   case 2:
     colorizeLastYear().then(logState);
     break;
-  
+
   case 3:
     colorizeCategories().then(logState);
     break;
-  
+
   case 4:
     colorizeCommercial().then(logState);
     break;
-  
+
   case 5:
     colorizeCommUsed().then(logState);
     break;
-    
+
   case 6:
     showCommBSides().then(logState);
     break;
-  
+
   case 7: // unsorted
     Promise.all([
       colorizeProjects(),
       sorted ? unsort() : Promise.resolve()
     ]).then(logState);
     break;
-    
+
   case 8: // sorted
     Promise.all([
       colorizeProjects(),
       !sorted ? sort() : Promise.resolve()
     ]).then(logState);
     break;
-    
+
   default:
     // check for project focus
-    proj = num - caseStates; // 
+    proj = num - caseStates; //
     console.log("proj ", proj);
     if (proj >= 0 && proj < order.length) {
       let withIntro = proj > 0;
