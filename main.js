@@ -13,16 +13,19 @@ let transitionTime = {
 let colorizeOpacity = 0.85;
 
 let project = {
-  interference: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153, 160, 162, 163, 164 ],
-  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, 155, 157, 161, 179 ],
+  interference: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153, 160, 162, 163, 164, 182 ],
+  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, 155, 157, 161, 179, 183 ],
   pillars: [91, 86, 73, 71, 70, 69, 48, 45, 40, 38, ],
   space_colonization: [77, 60, 57, 56, 55, 51, 126, 127, 159 ],
   flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, 121, 134, ],
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
+  vdw: [146,147,150,154,156,],
+  uncanny_values: [166,167,168],
+  rescaling_distances: [172,173,175],
 
   // not used in presentation – but shows up as "part of some project, rather than event/promo"
-  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139, 147, 150, 151, 156, 166, 167, 168, 172, 173, 175, 176, 177 ],
+  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139, 151, 176, 177, 184 ],
 };
 let noproject; // posts without a project
 
@@ -35,7 +38,7 @@ let noproject; // posts without a project
 let categories = {
   commercial: [], // add all from project in init()
   comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 128, 130, 139, 147, 150, 151, 166, 167, 168, 173, 175, 177], // actually used by the customer
-  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 146, 148, 154, 158, 165, 169, 170, 171, 174, 178, 180 ],
+  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 148, 158, 165, 169, 170, 171, 174, 178, 180, 181, 185 ],
   other: []
 };
 
@@ -47,10 +50,11 @@ let categoryColors = {
 };
 
 // Newest to oldest
-let order = [ 'universe', 'flash_flooding', 'pillars', 'interference', 'airplane_geometry',  'space_colonization', 'patterns' ]; // EDCH Munich
+let order = [ 'universe', 'flash_flooding', 'pillars', 'interference', 'airplane_geometry',  'space_colonization', 'vdw', 'rescaling_distances', 'uncanny_values' ]; // Forward 2019
+// let order = [ 'universe', 'flash_flooding', 'pillars', 'interference', 'airplane_geometry',  'space_colonization', 'patterns' ]; // EDCH Munich
 // let order = [ 'universe', 'airplane_geometry', 'pillars',  'space_colonization', 'flash_flooding', 'interference', 'patterns' ]; // NDU
 // let order = [ 'flash_flooding', 'interference', 'airplane_geometry', 'pillars', 'space_colonization', 'universe', 'patterns' ]; // Creative Prism
-// let order_short = [ 'airplane_geometry', 'flash_flooding', 'patterns' ]; // Forward Festival
+// let order_short = [ 'airplane_geometry', 'flash_flooding', 'patterns' ]; // Forward Festival 2018
 // let order_short = [ 'universe', 'flash_flooding', 'interference',   ]; // On Data and Design
 let order_short = [ 'universe', 'flash_flooding', 'pillars', 'interference' ]; // EDCH Munich
 
@@ -63,6 +67,10 @@ let keynoteSlides = {
   airplane_geometry: 79,
   space_colonization: 97,
   patterns: 107,
+  
+  vdw: 0,
+  uncanny_values: 0,
+  rescaling_distances: 0,
 };
 
 let projectColors = {
@@ -73,8 +81,11 @@ let projectColors = {
   flash_flooding: '#beeaff',
   universe: '#e73145',
   patterns: '#afe76e',
-  other: '#e8e8e8'
-      };
+  vdw: '#E84E2A',
+  uncanny_values: '#FEDF53',
+  rescaling_distances: '#F9AF8B',
+  other: '#e8e8e8',
+};
 
 let hues = {
   year1: 200,
