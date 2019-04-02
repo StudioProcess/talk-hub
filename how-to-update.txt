@@ -1,7 +1,7 @@
 Nov 8, 2018
 Updated: Dec 3, 2018
 
-# Update process
+# Update procedure
 
 * copy new posts to posts.html
 	* just use chrome inspector
