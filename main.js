@@ -20,7 +20,7 @@ let project = {
   flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, 121, 134, ],
   universe: [85, 82, 81, 79, 68, 67, ],
   patterns: [64, 63, 62, 61, 44, 42, 41, ],
-  vdw: [146,147,150,154,156,],
+  bubble_layout: [146,147,150,154,156,],
   uncanny_values: [166,167,168],
   rescaling_distances: [172,173,175],
 
@@ -50,7 +50,7 @@ let categoryColors = {
 };
 
 // Newest to oldest
-let order = [ 'universe', 'flash_flooding', 'pillars', 'interference', 'airplane_geometry',  'space_colonization', 'vdw', 'rescaling_distances', 'uncanny_values' ]; // Forward 2019
+let order = [ 'rescaling_distances', 'flash_flooding', 'universe', 'bubble_layout', 'pillars', 'interference', 'airplane_geometry', 'uncanny_values', ]; // Forward 2019
 // let order = [ 'universe', 'flash_flooding', 'pillars', 'interference', 'airplane_geometry',  'space_colonization', 'patterns' ]; // EDCH Munich
 // let order = [ 'universe', 'airplane_geometry', 'pillars',  'space_colonization', 'flash_flooding', 'interference', 'patterns' ]; // NDU
 // let order = [ 'flash_flooding', 'interference', 'airplane_geometry', 'pillars', 'space_colonization', 'universe', 'patterns' ]; // Creative Prism
@@ -58,32 +58,20 @@ let order = [ 'universe', 'flash_flooding', 'pillars', 'interference', 'airplane
 // let order_short = [ 'universe', 'flash_flooding', 'interference',   ]; // On Data and Design
 let order_short = [ 'universe', 'flash_flooding', 'pillars', 'interference' ]; // EDCH Munich
 
-let keynoteSlides = {
-  universe: 5,
-  flash_flooding: 20,
-  pillars: 38,
-  interference: 60,
-
-  airplane_geometry: 79,
-  space_colonization: 97,
-  patterns: 107,
-  
-  vdw: 0,
-  uncanny_values: 0,
-  rescaling_distances: 0,
-};
+// let keynoteSlides = { rescaling_distances: 0, flash_flooding: 20, universe: 5, vdw: 0, pillars: 38, interference: 60, airplane_geometry: 79, uncanny_values: 0, space_colonization: 97, patterns: 107 };
 
 let projectColors = {
+  rescaling_distances: '#C8F2FE',
+  flash_flooding: '#4FB69C',
+  universe: '#ff0000',
+  bubble_layout: '#eb6d2f',
+  pillars: '#4ED9FF',
   interference: '#2551a7',
-  airplane_geometry: '#e058ae',
-  pillars: '#fdff4d',
-  space_colonization: '#ada77e',
-  flash_flooding: '#beeaff',
-  universe: '#e73145',
-  patterns: '#afe76e',
-  vdw: '#E84E2A',
+  airplane_geometry: '#EF6BA0',
   uncanny_values: '#FEDF53',
-  rescaling_distances: '#F9AF8B',
+  
+  space_colonization: '#ada77e',
+  patterns: '#afe76e',
   other: '#e8e8e8',
 };
 
@@ -563,7 +551,8 @@ function setLinks() {
   // set group links
   Object.keys(project).forEach(projectName => {
     if (projectName == 'other') return;
-    let href = 'appswitch://keynote?slide=' + keynoteSlides[projectName];
+    // let href = 'appswitch://keynote?slide=' + keynoteSlides[projectName];
+    let href = 'appswitch://keynote?slideTag=' + projectName;
     project[projectName].forEach(num => {
       let a = getPost(num).find('a');
       a.attr('data-href-orig', a.attr('href'));
