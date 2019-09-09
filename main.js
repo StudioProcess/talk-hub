@@ -3,11 +3,11 @@ let followerCount = 4923;
 
 let transitionTime = {
   showHide: 600,
-  overlay: 1000,
-  dim: 1000,
+  overlay: 1800,
+  dim: 1800,
   resize: 2500,
   chrome: 1200,
-  scramble: 1000,
+  scramble: 2000,
 };
 
 let colorizeOpacity = 0.85;
@@ -314,10 +314,19 @@ function resizeAll(size=1, time=transitionTime.resize) {
   let html = '<div class="post filler"></div>'.repeat(n_filler);
   // console.log(html);
   $('.post-container').append( html );
-  $('.post').stop().animate({
+  
+  // $('.post').stop().animate({
+  //   width: w/row_width*100 + '%',
+  //   marginBottom: m/row_width*100 + '%'
+  // }, time);
+  
+  // Replaced jquery animate with css transition:
+  $('.post').css('transition', `filter ${transitionTime.dim}ms, width ${time}ms, margin-bottom ${time}ms`);
+  $('.post').css({
     width: w/row_width*100 + '%',
     marginBottom: m/row_width*100 + '%'
-  }, time);
+  });
+  
   // .u7YqG .. Video button
   $('.post-num, .u7YqG').css({'transform': `scale(${size})`});
 
