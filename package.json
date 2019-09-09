@@ -12,14 +12,14 @@
   "author": "Process Studio <contact@process.studio> (https://process.studio)",
   "license": "AGPL-3.0",
   "dependencies": {
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "jquery-color": "^1.0.0",
-    "seedrandom": "^3.0.1"
+    "seedrandom": "^3.0.3"
   },
   "devDependencies": {
-    "cheerio": "^1.0.0-rc.2",
+    "cheerio": "^1.0.0-rc.3",
     "live-server": "^1.2.1",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.7"
   }
 }

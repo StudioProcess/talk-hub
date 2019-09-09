@@ -50,7 +50,11 @@ const DEBUG = 0;
     links = links.slice(0, 2); // limit for testing
   }
   
-  let res = await Promise.all(links.map(request));
+  let res = await Promise.all(links.map(request)).catch(err => {
+    console.log('Error getting link:', err);
+    process.exit(1);
+  });
+  
   let posts = res.reduce((acc, res, i) => {
     let $ = cheerio.load(res);
     let scripts = $('body script');
