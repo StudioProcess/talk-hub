@@ -1,5 +1,5 @@
 let short = 0; // do short version? use order_short var to select projects
-let followerCount = 4923;
+let followerCount = 4929;
 
 let transitionTime = {
   showHide: 600,
@@ -7,7 +7,7 @@ let transitionTime = {
   dim: 1800,
   resize: 2500,
   chrome: 1200,
-  scramble: 2000,
+  scramble: 1500,
 };
 
 let colorizeOpacity = 0.85;
@@ -216,7 +216,7 @@ $(document).on('keydown', (e) => {
   else if (e.key == 'c' || e.key == 'C') { toggleColorize(); }
 
   else if (e.key == '0' || e.key == '3') { resizeAll(1); }
-  else if (e.key == '1') { resizeAll(0.23); }
+  else if (e.key == '1') { resizeAll(0.2); }
   else if (e.key == '2') { resizeAll(0.48); }
 
   else if (e.key == 's' || e.key == 'S') { toggleSort(); }
