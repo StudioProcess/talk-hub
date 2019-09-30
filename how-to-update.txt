@@ -1,5 +1,6 @@
 Nov 8, 2018
 Updated: Dec 3, 2018
+Updated: Sep 30, 2019
 
 # Update procedure
 
@@ -11,6 +12,9 @@ Updated: Dec 3, 2018
 	* chrome: save page as 'index.html' (Web Page, Complete)
 	* copy images from index_files to project index_files, skipping overwrites. (Newer images appear later, depending on upload date)
 	* links in posts.html are automatically changed to local
+
+* update order of story thumbnails
+	* using css order in index.html line 80
 
 * update posts.json (needed for post dates) by running `npm run scrape` (needs an up-to-date posts.html)
 

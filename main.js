@@ -1,5 +1,5 @@
-let alt = 1; // do alternative (short) version? use order_alt var to select projects
-let followerCount = 5025;
+let alt = 0; // do alternative (short) version? use order_alt var to select projects
+let followerCount = 5041;
 
 let transitionTime = {
   showHide: 600,
@@ -13,8 +13,8 @@ let transitionTime = {
 let colorizeOpacity = 0.85;
 
 let project = {
-  interference: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153, 160, 162, 163, 164, 182,   193, 212, 219 ],
-  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, 155, 157, 161, 179, 183,   192, 194],
+  interference: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153, 160, 162, 163, 164, 182,   193, 212, 219, 236 ],
+  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, 155, 157, 161, 179, 183,   192, 194, 235],
   pillars: [91, 86, 73, 71, 70, 69, 48, 45, 40, 38,    218 ],
   space_colonization: [77, 60, 57, 56, 55, 51, 126, 127, 159 ],
   flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, 121, 134, 233 ],
@@ -50,7 +50,7 @@ let categoryColors = {
 };
 
 // Newest to oldest
-let order = [ 'rescaling_distances', 'flash_flooding', 'universe', 'bubble_layout', 'pillars', 'interference', 'airplane_geometry', 'uncanny_values', ]; // Forward 2019
+let order = [ 'rescaling_distances', 'flash_flooding', 'universe', 'bubble_layout', 'pillars', 'interference', 'airplane_geometry', 'uncanny_values', ]; // Forward 2019, OFFF 2019
 // let order = [ 'universe', 'flash_flooding', 'pillars', 'interference', 'airplane_geometry',  'space_colonization', 'patterns' ]; // EDCH Munich
 // let order = [ 'universe', 'airplane_geometry', 'pillars',  'space_colonization', 'flash_flooding', 'interference', 'patterns' ]; // NDU
 // let order = [ 'flash_flooding', 'interference', 'airplane_geometry', 'pillars', 'space_colonization', 'universe', 'patterns' ]; // Creative Prism
