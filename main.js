@@ -1,5 +1,5 @@
-let alt = 0; // do alternative (short) version? use order_alt var to select projects
-let followerCount = 5043;
+let alt = 1; // do alternative (short) version? use order_alt var to select projects
+let followerCount = 5183;
 
 let transitionTime = {
   showHide: 600,
@@ -14,7 +14,7 @@ let colorizeOpacity = 0.85;
 
 let project = {
   interference: [113, 112, 111, 110, 109, 108, 107, 122, 123, 131, 136, 137, 138, 140, 141, 149, 152, 153, 160, 162, 163, 164, 182,   193, 212, 219, 236 ],
-  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, 155, 157, 161, 179, 183,   192, 194, 231, 235],
+  airplane_geometry: [106, 103, 102, 101, 98, 97, 96, 95, 94, 93, 90, 89, 117, 124, 135, 142, 155, 157, 161, 179, 183,   192, 194, 231, 235,  239, 241],
   pillars: [91, 86, 73, 71, 70, 69, 48, 45, 40, 38,    218 ],
   space_colonization: [77, 60, 57, 56, 55, 51, 126, 127, 159 ],
   flash_flooding: [75, 74, 72, 50, 49, 47, 43, 39, 121, 134, 233 ],
@@ -25,7 +25,7 @@ let project = {
   rescaling_distances: [172,173,175,   216, 226, ],
 
   // not used in presentation – but shows up as "part of some project, rather than event/promo"
-  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139, 151, 176, 177, 184,   195, 198, 199, 204, 215, 220, 221, 222, 230 ],
+  other: [87, 88, 99, 100, 76, 104, 105, 37, 46, 59, 58, 66, 52, 84, 119, 125, 128, 129, 130, 132, 133, 139, 151, 176, 177, 184,   195, 198, 199, 204, 215, 220, 221, 222, 230, 243 ],
 };
 let noproject; // posts without a project
 
@@ -38,14 +38,14 @@ let noproject; // posts without a project
 let categories = {
   commercial: [], // add all from project in init()
   comm_used: [37, 38, 46, 48, 50, 59, 66, 67, 68, 76, 81, 85, 104, 105, 108, 117, 119, 125, 128, 130, 139, 147, 150, 151, 166, 167, 168, 173, 175, 177,   187, 192, 194, 195, 196, 198, 223, 225, 202, 203, 209, 211, 214, 217, 223, 225, 229], // actually used by the customer
-  event_promo: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 148, 158, 165, 169, 170, 171, 174, 178, 180, 181, 185,   188, 190, 205, 224, 228 ], 
+  event_promo_test: [53, 54, 65, 78, 80, 83, 92, 114, 115, 116, 118, 120, 143, 144, 145, 148, 158, 165, 169, 170, 171, 174, 178, 180, 181, 185,   188, 190, 205, 224, 228,  240, 242 ], 
   other: []
 };
 
 let categoryColors = {
   commercial: '#f59090',
   comm_used: '#ff3838',
-  event_promo: '#0562b9',
+  event_promo_test: '#0562b9',
   other: '#349a3f'
 };
 
@@ -57,7 +57,8 @@ let order = [ 'rescaling_distances', 'flash_flooding', 'universe', 'bubble_layou
 // let order_alt = [ 'airplane_geometry', 'flash_flooding', 'patterns' ]; // Forward Festival 2018
 // let order_alt = [ 'universe', 'flash_flooding', 'interference',   ]; // On Data and Design
 // let order_alt = [ 'universe', 'flash_flooding', 'pillars', 'interference' ]; // EDCH Munich
-let order_alt = [ 'flash_flooding', 'interference', 'uncanny_values', 'rescaling_distances', 'universe', 'bubble_layout', 'pillars', 'airplane_geometry', ]; // MAK AI Symposium
+// let order_alt = [ 'flash_flooding', 'interference', 'uncanny_values', 'rescaling_distances', 'universe', 'bubble_layout', 'pillars', 'airplane_geometry', ]; // MAK AI Symposium
+let order_alt = [ 'rescaling_distances', 'flash_flooding', 'interference', 'airplane_geometry', 'uncanny_values' ]; // FYI Conference
 
 // let keynoteSlides = { rescaling_distances: 0, flash_flooding: 20, universe: 5, vdw: 0, pillars: 38, interference: 60, airplane_geometry: 79, uncanny_values: 0, space_colonization: 97, patterns: 107 };
 
