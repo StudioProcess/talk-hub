@@ -7,7 +7,7 @@
     "start": "sudo live-server --port=80 --browser='google chrome' --ignore=.git,node_modules .",
     "old": "sudo live-server old --mount='/node_modules:node_modules' --port=80 --browser='google chrome'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "scrape": "node --experimental-modules scrape"
+    "scrape": "node --experimental-modules scrape.mjs"
   },
   "author": "Process Studio <contact@process.studio> (https://process.studio)",
   "license": "AGPL-3.0",
