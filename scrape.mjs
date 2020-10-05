@@ -51,7 +51,10 @@ const DEBUG = 0;
   }
   
   let res = await Promise.all(links.map(request)).catch(err => {
-    console.log('Error getting link:', err);
+    // console.log('Error getting link:', err);
+    console.log('Error getting link:');
+    console.log('   URI:', err.options.uri);
+    console.log('   Status code:', err.statusCode);
     process.exit(1);
   });
   
